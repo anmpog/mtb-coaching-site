@@ -1,5 +1,16 @@
-<div id='container'>
-  <main>
-    <section id='hero'></section>
-  </main>
-</div>
+---
+import siteData from '../data/site-data.json'
+const { navLinks } = siteData
+---
+
+<nav>
+  <ul>
+    {
+      navLinks.map(({ title, path }) => (
+        <li>
+          <a href={path}>{title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

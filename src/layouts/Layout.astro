@@ -1,8 +1,14 @@
 ---
+export interface Props {
+  pageTitle: string
+  siteTitle?: string
+}
+
+import Footer from '../components/Footer.astro'
 import Navigation from '../components/Navigation.astro'
 import siteData from '../data/site-data.json'
-
-const { siteTitle } = siteData.siteMetaData
+console.log('Astro URL stuff: ', Astro.url)
+const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
 ---
 
 <!doctype html>
@@ -12,15 +18,18 @@ const { siteTitle } = siteData.siteMetaData
     <meta name='viewport' content='width=device-width' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='generator' content={Astro.generator} />
-    <title>{`${siteTitle}`}</title>
+    <title>{`${pageTitle} | ${siteTitle}`}</title>
   </head>
   <body>
+    <header>
+      <Navigation />
+    </header>
     <main>
-      <header>
-        <Navigation />
-      </header>
       <slot />
     </main>
+    <footer>
+      <Footer />
+    </footer>
   </body>
 </html>
 
