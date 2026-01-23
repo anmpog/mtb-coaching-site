@@ -1,4 +1,6 @@
 ---
+import '../assets/main.css'
+
 export interface Props {
   pageTitle: string
   siteTitle?: string
@@ -32,12 +34,3 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
     </footer>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
