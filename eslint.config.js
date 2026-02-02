@@ -11,4 +11,10 @@ export default defineConfig([
     },
     rules: { ...jsxA11y.configs.recommended.rules },
   },
+  {
+    files: ['**/*.{astro,ts,js,mjs}'],
+    rules: {
+      'no-console': 'error',
+    },
+  },
 ])
