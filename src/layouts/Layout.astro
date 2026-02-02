@@ -9,7 +9,6 @@ export interface Props {
 import Footer from '../components/Footer.astro'
 import Navigation from '../components/Navigation.astro'
 import siteData from '../data/site-data.json'
-console.log('Astro URL stuff: ', Astro.url)
 const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
 ---
 
@@ -22,11 +21,11 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
     <meta name='generator' content={Astro.generator} />
     <title>{`${pageTitle} | ${siteTitle}`}</title>
   </head>
-  <body>
+  <body class='flex min-h-screen flex-col'>
     <header>
       <Navigation />
     </header>
-    <main>
+    <main class='h-full flex-1 outline outline-red-400'>
       <slot />
     </main>
     <footer>

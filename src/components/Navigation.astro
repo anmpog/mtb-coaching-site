@@ -1,16 +1,72 @@
 ---
+import { Icon } from 'astro-icon/components'
 import siteData from '../data/site-data.json'
 const { navLinks } = siteData
 ---
 
-<nav>
-  <ul>
-    {
-      navLinks.map(({ title, path }) => (
-        <li>
-          <a href={path}>{title}</a>
-        </li>
-      ))
-    }
-  </ul>
+<nav id='main-nav' class='main-nav'>
+  <div id='menu-backdrop' class='backdrop'></div>
+  <button id='menu-button' role='button' aria-labelledby='button-label'>
+    <Icon name={'ion:menu'} title='site navigation' focusable={'false'} />
+    <span id='button-label' hidden>Site Navigation</span>
+  </button>
+  <div id='menu-wrapper'>
+    <ul id='menu'>
+      {
+        navLinks.map(({ title, path }) => (
+          <li>
+            <a href={path}>{title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <script>
+    import '../scripts/nav-menu.ts';
+  </script>
 </nav>
+<style>
+  /* 0.25rem is the tailwind equivalent of 1 unit of spacing */
+
+  nav#main-nav {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #menu-backdrop.blur {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    backdrop-filter: blur(1px);
+    /* background-color: red; */
+    border: 10px solid pink;
+  }
+
+  #menu-button {
+    margin: calc(0.25rem * 1);
+    z-index: 100;
+    outline: 1px solid red;
+  }
+
+  #menu-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.25s ease-in-out;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  #menu-wrapper.expanded {
+    grid-template-rows: 1fr;
+  }
+
+  #menu {
+    min-height: 0;
+  }
+</style>
