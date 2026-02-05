@@ -1,36 +1,51 @@
 const navMenuButton = document.getElementById('menu-button')
 const navMenuBackdrop = document.getElementById('menu-backdrop')
-const navMenu = document.getElementById('menu')
 const navMenuWrapper = document.getElementById('menu-wrapper')
+const mainNav = document.getElementById('main-nav')
 
-function toggleBackdropBlur() {
-  // console.log(
-  //   'blur in classlist: ',
-  //   navMenuBackdrop?.classList.contains('blur'),
-  // )
+function openMenu() {
+  navMenuButton?.setAttribute('aria-expanded', 'true')
+  navMenuWrapper?.classList.add('expanded')
+  navMenuBackdrop?.classList.add('blur')
 
-  if (!navMenuBackdrop?.classList.contains('blur')) {
-    return navMenuBackdrop?.classList.add('blur')
-  }
-
-  return navMenuBackdrop?.classList.remove('blur')
+  window.addEventListener('keydown', detectEscKeyPress)
+  window.addEventListener('click', detectClickOutsideMenu)
 }
 
-function toggleMenuVisibility() {
-  if (!navMenuWrapper?.classList.contains('expanded')) {
-    return navMenuWrapper?.classList.add('expanded')
-  }
+function closeMenu() {
+  navMenuButton?.setAttribute('aria-expanded', 'false')
+  navMenuWrapper?.classList.remove('expanded')
+  navMenuBackdrop?.classList.remove('blur')
 
-  return navMenuWrapper?.classList.remove('expanded')
+  window.removeEventListener('keydown', detectEscKeyPress)
+  window.removeEventListener('click', detectClickOutsideMenu)
 }
 
-document.addEventListener('click', (event) => {
-  console.log('click')
-  console.log(
-    'nav menu contains event target: ',
-    navMenu?.contains(event?.target),
-  )
+function detectClickOutsideMenu(event) {
+  if (
+    !navMenuWrapper?.contains(event.target) &&
+    !navMenuButton?.contains(event.target)
+  ) {
+    closeMenu()
+  }
+}
 
-  toggleBackdropBlur()
-  toggleMenuVisibility()
+function detectEscKeyPress(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    closeMenu()
+  }
+}
+
+navMenuButton?.addEventListener('click', (event) => {
+  // console.log('nav menu button click')
+  event?.stopPropagation()
+  if (navMenuButton?.getAttribute('aria-expanded') === 'false') {
+    openMenu()
+  } else if (navMenuButton?.getAttribute('aria-expanded') === 'true') {
+    closeMenu()
+  }
+})
+
+window.addEventListener('keydown', (event) => {
+  detectEscKeyPress(event)
 })
