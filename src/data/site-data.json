@@ -1,5 +1,6 @@
 {
   "siteTitle": "MAX MTB Coaching",
+  "logoType": "Professional Mountain Bike Coaching",
   "navLinks": [
     { "title": "Home", "path": "/" },
     { "title": "About", "path": "/about" },

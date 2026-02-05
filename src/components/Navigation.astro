@@ -1,18 +1,19 @@
 ---
 import { Icon } from 'astro-icon/components'
 import siteData from '../data/site-data.json'
-const { navLinks } = siteData
+const { navLinks, logoType } = siteData
+import { Image } from 'astro:assets'
+import logo from '../assets/max-mtb-logo-lowres.png'
 ---
 
 <nav id='main-nav' class='main-nav'>
   <div id='menu-backdrop' class='backdrop'></div>
   <a id='logo-link' href='/'>
-    <img
-      id='logo-img'
-      alt='Max MTB Logo'
-      src='src/assets/max-mtb-logo-lowres.png'
-    />
+    <Image id='logo-img' alt='Max MTB Logo' src={logo} />
   </a>
+  <div id='logo-type' class='logo-type'>
+    <p>{logoType}</p>
+  </div>
   <button id='menu-button' aria-labelledby='button-label' aria-expanded='false'>
     <Icon name={'ion:menu'} title='site navigation' focusable={'false'} />
     <span id='button-label' hidden>Site Navigation</span>
@@ -104,11 +105,6 @@ const { navLinks } = siteData
     background: #fff;
   }
 
-  /* #menu li {
-    display: inline-block;
-    font-size: 18px;
-  } */
-
   #menu li a {
     padding: calc(0.25rem * 4) calc(0.25rem * 6);
     outline: 1px solid black;
@@ -118,14 +114,20 @@ const { navLinks } = siteData
   #logo-link {
     height: 4rem;
     width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* add this to block scrolling when nav is open */
-  /* 
-  .block-scroll {
-    position: relative;
-    height: 100vh;
-    overflow-y: hidden;
-    touch-action: none;
-  } */
+  #logo-type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #logo-type p {
+    font-weight: bold;
+    text-align: center;
+  }
 </style>

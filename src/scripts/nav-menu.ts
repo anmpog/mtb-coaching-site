@@ -1,12 +1,12 @@
 const navMenuButton = document.getElementById('menu-button')
 const navMenuBackdrop = document.getElementById('menu-backdrop')
 const navMenuWrapper = document.getElementById('menu-wrapper')
-const mainNav = document.getElementById('main-nav')
 
 function openMenu() {
   navMenuButton?.setAttribute('aria-expanded', 'true')
   navMenuWrapper?.classList.add('expanded')
   navMenuBackdrop?.classList.add('blur')
+  document.body.classList.add('block-scroll')
 
   window.addEventListener('keydown', detectEscKeyPress)
   window.addEventListener('click', detectClickOutsideMenu)
@@ -16,6 +16,7 @@ function closeMenu() {
   navMenuButton?.setAttribute('aria-expanded', 'false')
   navMenuWrapper?.classList.remove('expanded')
   navMenuBackdrop?.classList.remove('blur')
+  document.body.classList.remove('block-scroll')
 
   window.removeEventListener('keydown', detectEscKeyPress)
   window.removeEventListener('click', detectClickOutsideMenu)
@@ -37,7 +38,6 @@ function detectEscKeyPress(event: KeyboardEvent) {
 }
 
 navMenuButton?.addEventListener('click', (event) => {
-  // console.log('nav menu button click')
   event?.stopPropagation()
   if (navMenuButton?.getAttribute('aria-expanded') === 'false') {
     openMenu()
