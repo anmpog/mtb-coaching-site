@@ -1,0 +1,51 @@
+---
+const { title, path, currentPath } = Astro.props
+---
+
+<li>
+  <a href={path} class={currentPath === path ? 'active' : ''} data-text={title}>
+    {title}
+  </a>
+</li>
+<style>
+  /* 0.25rem is the tailwind equivalent of 1 unit of spacing */
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: inherit;
+    text-decoration: none;
+    font-weight: normal;
+    padding: calc(0.25rem * 4) calc(0.25rem * 6);
+    outline: 1px solid black;
+  }
+
+  a::after {
+    content: attr(data-text);
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    user-select: none;
+    pointer-events: none;
+    font-weight: bold;
+  }
+
+  a.active {
+    font-weight: bold;
+    color: var(--active-link);
+    outline-color: var(--active-link);
+  }
+
+  a:focus {
+    outline: auto;
+  }
+
+  /* 768px comes from default "medium screen" value in Tailwind 3 */
+  @media (width >= 768px) {
+    a {
+      padding: calc(0.25rem * 2);
+      outline: none;
+    }
+  }
+</style>

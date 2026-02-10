@@ -4,6 +4,9 @@ import siteData from '../data/site-data.json'
 const { navLinks, logoType } = siteData
 import { Image } from 'astro:assets'
 import logo from '../assets/max-mtb-logo-lowres.png'
+import NavLink from './NavLink.astro'
+
+const currentPath = new URL(Astro.request.url).pathname
 ---
 
 <nav id='main-nav' class='main-nav'>
@@ -23,9 +26,7 @@ import logo from '../assets/max-mtb-logo-lowres.png'
     <ul id='menu'>
       {
         navLinks.map(({ title, path }) => (
-          <li>
-            <a href={path}>{title}</a>
-          </li>
+          <NavLink title={title} path={path} currentPath={currentPath} />
         ))
       }
     </ul>
@@ -66,10 +67,6 @@ import logo from '../assets/max-mtb-logo-lowres.png'
     justify-content: center;
     align-items: center;
     align-self: center;
-  }
-
-  #menu-button:focus {
-    outline: auto;
   }
 
   #menu-button svg {
@@ -129,5 +126,38 @@ import logo from '../assets/max-mtb-logo-lowres.png'
   #logo-type p {
     font-weight: bold;
     text-align: center;
+  }
+
+  /* 768px comes from default "medium screen" value in Tailwind 3 */
+  @media (width >= 768px) {
+    #menu-button {
+      display: none;
+    }
+
+    #menu-wrapper {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      background: none;
+      transition: none;
+      border-bottom: none;
+      justify-content: flex-end;
+      width: auto;
+    }
+
+    #menu {
+      flex-direction: row;
+      gap: 1rem;
+      padding: calc(0.25rem * 1);
+    }
+
+    #menu li a {
+      padding: calc(0.25rem * 1);
+      border: 2px solid blue;
+    }
+
+    #menu a:hover {
+      cursor: pointer;
+    }
   }
 </style>

@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Utility Classes */
+@layer base {
+  :root {
+    /* Colors */
+    --active-link: rgb(49, 127, 129);
+
+    /* Screen sizes based on tailwind-3 defaults */
+    --screen-sm: 640px;
+    --screen-md: 768px;
+    --screen-lg: 1024px;
+    --screen-xl: 1280px;
+    --screen-2xl: 1536px;
+  }
+}
+
+/* 
+* Utility Classes 
+*/
 
 /* This class is applied to the <body> when nav menu is open */
 .block-scroll {
