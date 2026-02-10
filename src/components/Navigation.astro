@@ -129,7 +129,13 @@ const currentPath = new URL(Astro.request.url).pathname
   }
 
   /* 768px comes from default "medium screen" value in Tailwind 3 */
+  /* @media (width >= 768px) { */
   @media (width >= 768px) {
+    nav#main-nav {
+      @apply max-w-4xl;
+      margin: 0 auto;
+    }
+
     #menu-button {
       display: none;
     }
