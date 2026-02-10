@@ -1,7 +1,83 @@
 ---
+import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
+import heroImage from '../assets/hero-img-lowres.jpg'
+
+import heroData from '../data/site-data.json'
+const { tagline, heroTitle, heroSubtext } = heroData
 ---
 
 <Layout pageTitle='Home'>
-  <h1>Home</h1>
+  <div class='paralax'>
+    <Image src={heroImage} alt='Image of Max coaching several riders' />
+    <div class='hero-text'>
+      <div class='text-group'>
+        <p class='hero-tagline'>{tagline}</p>
+        <h1 class='hero-title'>{heroTitle}</h1>
+        <p class='hero-subtext'>{heroSubtext}</p>
+        <button class='hero-cta'>Book Now</button>
+      </div>
+    </div>
+  </div>
 </Layout>
+<style>
+  .paralax {
+    position: relative;
+    z-index: 0;
+    min-height: 75vh;
+    display: grid;
+    grid-template-areas: stack;
+  }
+
+  .hero-text {
+    width: 100%;
+    border: 2px solid blue;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+  }
+
+  .text-group {
+    margin-top: calc(0.25rem * 24);
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    outline: 2px solid red;
+  }
+
+  .hero-text * + * {
+    margin-top: 1rem;
+  }
+
+  .hero-tagline {
+    @apply text-lg;
+    color: white;
+    text-transform: uppercase;
+  }
+
+  .hero-subtext {
+    @apply text-2xl;
+    color: white;
+    text-transform: capitalize;
+  }
+
+  .hero-title {
+    @apply text-8xl;
+    color: white;
+    text-transform: capitalize;
+  }
+
+  .hero-cta {
+    @apply border border-neutral-950 bg-neutral-950 px-7 py-2 text-neutral-200;
+    box-sizing: border-box;
+  }
+
+  .hero-cta:hover {
+    @apply border border-neutral-950 bg-neutral-200 text-neutral-950 transition-colors duration-500;
+  }
+
+  .paralax > * {
+    grid-area: stack;
+  }
+</style>
