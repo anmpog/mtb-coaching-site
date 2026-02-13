@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
+    "@fontsource-variable/raleway": "^5.2.8",
     "@iconify-json/ion": "^1.2.6",
     "astro": "^5.16.11",
     "astro-icon": "^1.1.5",

@@ -13,7 +13,19 @@
     --screen-lg: 1024px;
     --screen-xl: 1280px;
     --screen-2xl: 1536px;
+
+    /* Component Variables */
+    --nav-height-mobile: theme('height.24')
   }
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: url('@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2')
+    format('woff2');
 }
 
 /* 
