@@ -40,6 +40,7 @@ const currentPath = new URL(Astro.request.url).pathname
   /* 0.25rem is the tailwind equivalent of 1 unit of spacing */
 
   nav#main-nav {
+    height: var(--nav-height-mobile);
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -84,12 +85,14 @@ const currentPath = new URL(Astro.request.url).pathname
     top: 0;
     right: 0;
     width: 100%;
-    border-bottom: 2px solid black;
+    z-index: 50;
+    visibility: hidden;
   }
 
   #menu-wrapper.expanded {
     grid-template-rows: 1fr;
     min-height: 75vh;
+    visibility: visible;
   }
 
   #menu {
@@ -100,6 +103,7 @@ const currentPath = new URL(Astro.request.url).pathname
     align-items: center;
     gap: calc(0.25rem * 8);
     background: #fff;
+    border-bottom: 2px solid black;
   }
 
   #menu li a {
@@ -149,17 +153,14 @@ const currentPath = new URL(Astro.request.url).pathname
       border-bottom: none;
       justify-content: flex-end;
       width: auto;
+      visibility: visible;
     }
 
     #menu {
       flex-direction: row;
       gap: 1rem;
       padding: calc(0.25rem * 1);
-    }
-
-    #menu li a {
-      padding: calc(0.25rem * 1);
-      border: 2px solid blue;
+      border: none;
     }
 
     #menu a:hover {
