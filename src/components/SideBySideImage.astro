@@ -1,0 +1,36 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+export interface Props {
+  /**
+   * Imported image metadata.
+   *
+   * @example
+   * import MyImage from '../assets/my-image.jpg'
+   * <SideBySideImage imageSrc={MyImage} />
+   */
+  imageSrc: ImageMetadata
+  /**
+   * A short but descriptive string that describes the image for users who are
+   * relying on screen readers.
+   *
+   * @example
+   * <SideBySideImage altText='An image of a mountain biker smiling' />
+   */
+  altText: string
+}
+
+const { imageSrc, altText } = Astro.props
+---
+
+<div class='relative max-h-[716px] w-full overflow-hidden'>
+  <!-- Ratio box to force aspect ratio -->
+  <div id='ratio-box' class='pt-[75%]'></div>
+  <Image
+    src={imageSrc}
+    alt={altText}
+    layout='full-width'
+    class='absolute inset-0 h-full w-full content-center object-cover'
+  />
+</div>

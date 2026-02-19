@@ -25,7 +25,15 @@ This example comes from the `<Navigation>` component:
 The media query's defined breakpoint of `768px` comes from the [Tailwind 3 defaults](https://v3.tailwindcss.com/docs/responsive-design). I also copied these breakpoint values in the `main.css` file for easier reference, even though the breakpoints can be taken advantage of by using Tailwind classes like so:
 
 ```html
-<div class='sm:px-2 md:px-4 lg:px-6'>
-  ...
-</div>
+<div class="sm:px-2 md:px-4 lg:px-6">...</div>
 ```
+
+## Layout
+
+### Side By Side
+
+The `<SideBySide />` layout component has two slots: content and image. The slots determine the layout on desktop. On smaller screens (phones) the content will default to a column layout wherein non-graphical content will appear first, followed by graphical content.
+
+In the site as it existed before I attempted to rebuild it, all side-by-side layouts were roughly 50/50 width on desktop, and one side was always an image and the other was always textual (text or form).
+
+The `<SiceBySide />` component is meant to be used alongside the `<SideBySideText />` and `<SideBySideImage />` which contain styling directives most appropriate to their respective content types. The `<SideBySide />` component defaults to a layout of content (on the left) and image (on the right), but this can be changed by way of the component's `contentDirection` prop. The `main.css` The `<SideBySide />` component has a `data-` attribute that allows styling of child components to respond to the orientation determined by the `contentDirection` prop.

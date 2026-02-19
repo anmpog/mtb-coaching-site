@@ -1,0 +1,19 @@
+---
+export interface Props {
+  contentTitle: string
+  content: string
+}
+
+const { contentTitle, content } = Astro.props
+---
+
+<div id='side-by-side-text' class='flex h-full flex-col px-6 py-14 font-sans'>
+  <div class='flow-content flex h-full flex-col justify-center'>
+    <h2 class='text-left font-heading text-3xl uppercase'>
+      {contentTitle}
+    </h2>
+    <p class='max-w-[60ch]'>
+      {content}
+    </p>
+  </div>
+</div>
