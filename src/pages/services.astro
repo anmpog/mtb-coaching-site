@@ -1,7 +1,132 @@
 ---
+import SideBySide from '../components/SideBySide.astro'
+import SideBySideImage from '../components/SideBySideImage.astro'
+import SideBySideText from '../components/SideBySideText.astro'
 import Layout from '../layouts/Layout.astro'
+import PrivateCoachingImg from '../assets/services-private-coaching-img.jpg'
+import SmallGroupCoachingImg from '../assets/services-small-group-coaching-img.jpg'
+import OnlineCoachingImg from '../assets/services-online-coaching-img.jpg'
+import ClincisJumpImg from '../assets/clinics-jumping-img.jpg'
+import ClinicsManualsImg from '../assets/clinics-manuals-img.png'
+import ClinicsCorneringImg from '../assets/clinics-cornering-img.jpg'
+import ClinicsTechnicalClimbingImg from '../assets/clinics-technical-climbing-img.jpeg'
+import ClinicsDropImage from '../assets/clinics-drops-img.jpeg'
+import ClinicsFundamentalsImage from '../assets/clinics-fundamentals-img.jpg'
 ---
 
 <Layout pageTitle='Services'>
   <h1>Services</h1>
+
+  <h2>Private Lessons and Small Groups</h2>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Private Coaching'
+      content=`Private coaching is a 3 hour, on-on-one lesson with just you and the coach. This allows the lesson to be completely tailored to the individual, what they want to work on, what goals they are working towards achieving and the trail network/skills park they want to ride.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={PrivateCoachingImg}
+      altText='Max coaching a rider on a dirt track'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='content-image'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Small group coaching'
+      content=`Small group coaching sessions allow a group of 2-3 friends to share a private 3 hour lesson at a reduced rate while still getting a lesson completely tailored to the individuals goals and skills they want to work on.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={SmallGroupCoachingImg}
+      altText='A mountain bike rider on an orange bike wearing pads being coached by Max'
+    />
+  </SideBySide>
+
+  <h2>Online Coaching</h2>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Online coaching'
+      content=`We are now offering online coaching. From custom skills programs to general fundamentals. Programs include accompanying how-to videos, breaking down the skills. Monthly and fortnightly phone or video check-ins are also available as well as client video submission reviews and feedback.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={OnlineCoachingImg}
+      altText='Max bunny hopping over an obstacle at a contest'
+    />
+  </SideBySide>
+  <h2>Skills Clinics</h2>
+  <SideBySide contentDirection='content-image'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Jump clinic'
+      content=`If you are struggling with confidence or consistency on jumps or are looking to start hitting jumps, or perhaps feel as though you have plateaued, a jump clinic is a great option for you. In this clinic we go over the fundamentals of jumping and break them down to ultimately help the rider achieve more consistency while jumping which in turn equals more confidence.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClincisJumpImg}
+      altText='A picture of Max soaring through the air on a mountain bike in a desert environment'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Manual & Wheelie Clinic'
+      content=`In this clinic we go over the fundamentals of these two skills and how to avoid common mistakes, as well as when you might use them on the trail. Using a variety of drills, riders will gain confidence on one wheel. This is a great option for beginners who are just starting to learn these skills as well as intermediate riders who are struggling to progress.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClinicsManualsImg}
+      altText='A head-on image of Max riding a wheelie down a street'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='content-image'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Cornering clinic'
+      content=`Cornering is an essential skill for any rider. In this clinic we will go over a variety of corners that riders will encounter on trails, from flat corners to berm corners and use drills to help equip the rider with the skills necessary to confidently tackle them.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClinicsCorneringImg}
+      altText='Max rounding a corner on a mountain bike trail at a high rate of speed'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Technical Climbing Clinic'
+      content=`The clinic is all about improving ones ability to ride up and over a variety of obstacles and situations that one might find themselves in on a technical climb. we will work on balance, assessing the trail and picking routes as well as different ways to navigate obstacles. Ultimately, giving the rider the confidence and tools to tackle more technical climbs.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClinicsTechnicalClimbingImg}
+      altText='Max riding his mountain bike up steep rocky terrain'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='content-image'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Drop clinic'
+      content=`Learning to ride drops confidently and safely is a key skill for any rider. In this clinic we go over how to safely tackle drops from rolling them to dropping them and the importance of learning to ride drops at a variety of different speeds.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClinicsDropImage}
+      altText='Max rolling off a large boulder the size of a small boulder in the desert'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideText
+      slot='content'
+      contentTitle='Fundamentals clinic'
+      content=`This clinic is all about learning some of the basic fundamentals of mountain biking and is a great option for beginners. We will go over bike set up, body positioning, braking control and cornering.`
+    />
+    <SideBySideImage
+      slot='image'
+      imageSrc={ClinicsFundamentalsImage}
+      altText='Max airborne high over a jump on a dirt jump track'
+    />
+  </SideBySide>
 </Layout>

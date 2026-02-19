@@ -6,26 +6,26 @@
   :root {
     /* Colors */
     --active-link: rgb(49, 127, 129);
-
-    /* Screen sizes based on tailwind-3 defaults */
-    --screen-sm: 640px;
+    /* brand red is Pantone 186C */
+    --brand-red: '#C8102E' /* Screen sizes based on tailwind-3 defaults */
+      --screen-sm: 640px;
     --screen-md: 768px;
     --screen-lg: 1024px;
     --screen-xl: 1280px;
     --screen-2xl: 1536px;
 
     /* Component Variables */
-    --nav-height-mobile: theme('height.24')
+    --nav-height-mobile: theme('height.24');
   }
-}
 
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 900;
-  src: url('@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2')
-    format('woff2');
+  @font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 900;
+    src: url('@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2')
+      format('woff2');
+  }
 }
 
 /* 
@@ -38,4 +38,19 @@
   height: 100vh;
   overflow-y: hidden;
   touch-action: none;
+}
+
+.flow-content * + * {
+  margin-top: 1.5em;
+}
+
+@media (min-width: theme('screens.md')) {
+  /* Utility classes to work alongside side-by-side component */
+  #side-by-side[data-content-direction='image-content'] #side-by-side-text {
+    align-items: flex-start;
+  }
+
+  #side-by-side[data-content-direction='content-image'] #side-by-side-text {
+    align-items: flex-end;
+  }
 }
