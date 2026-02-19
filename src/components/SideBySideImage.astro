@@ -24,7 +24,7 @@ export interface Props {
 const { imageSrc, altText } = Astro.props
 ---
 
-<div class='relative max-h-[716px] w-full overflow-hidden'>
+<div class='relative overflow-hidden md:max-h-[32rem]'>
   <!-- Ratio box to force aspect ratio -->
   <div id='ratio-box' class='pt-[75%]'></div>
   <Image

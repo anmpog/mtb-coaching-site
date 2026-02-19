@@ -2,8 +2,12 @@
 import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
 import heroImage from '../assets/hero-img-lowres.jpg'
-
 import heroData from '../data/site-data.json'
+import SideBySide from '../components/SideBySide.astro'
+import sideBySideImg1 from '../assets/home-side-by-side-1.jpg'
+import sideBySideImg2 from '../assets/home-side-by-side-2.jpg'
+import SideBySideText from '../components/SideBySideText.astro'
+import SideBySideImage from '../components/SideBySideImage.astro'
 const { tagline, heroTitle, heroSubtext } = heroData
 ---
 
@@ -22,6 +26,31 @@ const { tagline, heroTitle, heroSubtext } = heroData
       <button class='hero-cta'>Book Now</button>
     </div>
   </div>
+  <SideBySide contentDirection='content-image'>
+    <SideBySideImage
+      slot='image'
+      imageSrc={sideBySideImg1}
+      altText='An picture of Max and a client examining trail conditions'
+    />
+    <SideBySideText
+      slot='content'
+      contentTitle='About Us'
+      content=`Max MTB Coaching is a professional mountain bike coaching service based in Southern California, including the Los Angeles area, Orange County and San Diego County. Our mission is to help riders of all abilities bring their skills and confidence to new levels. Whether you're just starting out or looking to refine your technique, our private and small group coaching sessions and skills clinics are designed to help you achieve your goals. We're passionate about mountain biking and want to share our knowledge and expertise with you.`
+    />
+  </SideBySide>
+
+  <SideBySide contentDirection='image-content'>
+    <SideBySideImage
+      slot='image'
+      imageSrc={sideBySideImg2}
+      altText='A picture of Max bunny-hopping against a background of the sunset and the ocean'
+    />
+    <SideBySideText
+      slot='content'
+      contentTitle='Be the first to know'
+      content='where is my content'
+    />
+  </SideBySide>
 </Layout>
 <style>
   .parallax {
@@ -30,6 +59,7 @@ const { tagline, heroTitle, heroSubtext } = heroData
     display: grid;
     grid-template-areas: 'stack';
     align-content: stretch;
+    overflow-x: hidden;
   }
 
   .parallax > * {
