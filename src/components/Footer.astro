@@ -1,1 +1,69 @@
-<footer>Footer</footer>
+---
+import { Image } from 'astro:assets'
+import logo from '../assets/max-mtb-logo-lowres.png'
+import siteData from '../data/site-data.json'
+import IconLink from './IconLink.astro'
+const { logoType, siteTitle, contactInfo, socialLinks } = siteData
+---
+
+<footer class='min-h-36 bg-[var(--footer-bg-color)]'>
+  <div class='mx-auto grid max-w-4xl grid-cols-1 p-4 md:grid-cols-2 md:gap-4'>
+    <div class='flex flex-col justify-center md:col-span-1'>
+      <Image src={logo} alt='Max MTB Logo' />
+      <span class='font-heading text-xl tracking-wider'>{siteTitle}</span>
+      <p>{logoType}</p>
+      <section>
+        <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
+          Contact
+        </h2>
+        <address>
+          <ul aria-label='contact information'>
+            {
+              contactInfo.map(({ type, address, label }) => {
+                let formattedTel = undefined
+                // Remove dashes
+                if (type === 'tel') {
+                  formattedTel = address.replace(/[^\d+]/g, '')
+                }
+                return (
+                  <li>
+                    <a href={`${type}:${formattedTel}`}>
+                      <span class='font-bold uppercase not-italic'>
+                        {label}:
+                      </span>
+                      {address}
+                    </a>
+                  </li>
+                )
+              })
+            }
+          </ul>
+        </address>
+      </section>
+      <section>
+        <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
+          Follow us
+        </h2>
+        <ul class='flex gap-3' aria-label='Social media links'>
+          {
+            socialLinks.map(({ title, address, iconName }) => (
+              <li>
+                <IconLink title={title} address={address} iconName={iconName} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </div>
+  <p class='mt-[3em] pb-6 text-center font-bold'>
+    &copy;<span id='year' aria-label='copyright year'></span>&nbsp;Max MTB
+    Coaching
+  </p>
+  <script>
+    const yearElement = document.getElementById('year')
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear().toString()
+    }
+  </script>
+</footer>

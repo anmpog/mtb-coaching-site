@@ -6,6 +6,7 @@
   :root {
     /* Colors */
     --active-link: rgb(49, 127, 129);
+    --footer-bg-color: #57bbbf;
     /* brand red is Pantone 186C */
     --brand-red: '#C8102E' /* Screen sizes based on tailwind-3 defaults */
       --screen-sm: 640px;

@@ -4,6 +4,31 @@
   "heroTitle": "Max MTB Coaching",
   "heroSubtext": "Professional mountain bike coaching for all skill levels",
   "tagline": "Take your mountain biking to the max",
+  "contactInfo": [
+    { "type": "tel", "address": "1-310-970-4666", "label": "phone" },
+    {
+      "type": "mailto",
+      "address": "maxmtbcoaching@gmail.com",
+      "label": "email"
+    }
+  ],
+  "socialLinks": [
+    {
+      "title": "facebook",
+      "address": "https://www.facebook.com/profile.php?id=61553850148218",
+      "iconName": "logo-facebook"
+    },
+    {
+      "title": "instagram",
+      "address": "https://www.instagram.com/maximillianmitchell/61553850148218",
+      "iconName": "logo-instagram"
+    },
+    {
+      "title": "youtube",
+      "address": "https://www.youtube.com/@maximillianmitchell4380?sub_confirmation=1",
+      "iconName": "logo-youtube"
+    }
+  ],
   "navLinks": [
     { "title": "Home", "path": "/" },
     { "title": "About", "path": "/about" },

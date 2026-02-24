@@ -37,3 +37,35 @@ The `<SideBySide />` layout component has two slots: content and image. The slot
 In the site as it existed before I attempted to rebuild it, all side-by-side layouts were roughly 50/50 width on desktop, and one side was always an image and the other was always textual (text or form).
 
 The `<SiceBySide />` component is meant to be used alongside the `<SideBySideText />` and `<SideBySideImage />` which contain styling directives most appropriate to their respective content types. The `<SideBySide />` component defaults to a layout of content (on the left) and image (on the right), but this can be changed by way of the component's `contentDirection` prop. The `main.css` The `<SideBySide />` component has a `data-` attribute that allows styling of child components to respond to the orientation determined by the `contentDirection` prop.
+
+## Site Meta Data
+
+The file `src/data/site-data.json` is a way to store "static" site data. The data in this file should conform to specific structures. For example, the file contains an array (list) of `navLinks` that represent the site's available pages. Inside that list, there are objects that all have an identical structure:
+
+- `title`: a human-readable title that describes where a nav link will take you
+- `path`: a [valid `href` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#href) that is passed to an `<a>` element to create a working link
+
+The corresponding component that renders the data in this file should be constructed to consume this data. For example, in the `Navigation.astro` file, the navigation links are imported and rendered dynamically as a list:
+
+```javascript
+---
+// import the data
+import siteData from '../data/site-data.json'
+// destructure the nav links from the rest of the site data
+const { navLinks } = siteData
+// purpose built component for rendering an <a> element consistently
+import NavLink from './NavLink.astro'
+---
+
+<nav id='main-nav' class='main-nav'>
+  <ul id='menu'>
+    {
+      navLinks.map(({ title, path }) => (
+        <NavLink title={title} path={path} currentPath={currentPath} />
+      ))
+    }
+  </ul>
+</nav>
+```
+
+This reduces (or, ideally, eliminates) the need to update multiple files at once manually. If the data is structured thoughtfully and rendered dynamically, the possibility of making errors is dramatically reduced and our site is more flexible and easier to update.
