@@ -11,9 +11,9 @@ const { title, address, iconName, size = 36 } = Astro.props
 
 <a href={address} title={`Follow us on ${title}`}>
   <Icon
-    name={`ion:${iconName}`}
-    focusable='false'
-    size={size}
     aria-hidden='true'
+    focusable='false'
+    name={`ion:${iconName}`}
+    size={size}
   />
 </a>

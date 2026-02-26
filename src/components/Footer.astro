@@ -3,13 +3,14 @@ import { Image } from 'astro:assets'
 import logo from '../assets/max-mtb-logo-lowres.png'
 import siteData from '../data/site-data.json'
 import IconLink from './IconLink.astro'
+import ContactForm from './ContactForm.astro'
 const { logoType, siteTitle, contactInfo, socialLinks } = siteData
 ---
 
 <footer class='min-h-36 bg-[var(--footer-bg-color)]'>
   <div class='mx-auto grid max-w-4xl grid-cols-1 p-4 md:grid-cols-2 md:gap-4'>
     <div class='flex flex-col justify-center md:col-span-1'>
-      <Image src={logo} alt='Max MTB Logo' />
+      <Image alt='Max MTB Logo' src={logo} />
       <span class='font-heading text-xl tracking-wider'>{siteTitle}</span>
       <p>{logoType}</p>
       <section>
@@ -44,20 +45,23 @@ const { logoType, siteTitle, contactInfo, socialLinks } = siteData
         <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
           Follow us
         </h2>
-        <ul class='flex gap-3' aria-label='Social media links'>
+        <ul aria-label='Social media links' class='flex gap-3'>
           {
             socialLinks.map(({ title, address, iconName }) => (
               <li>
-                <IconLink title={title} address={address} iconName={iconName} />
+                <IconLink address={address} iconName={iconName} title={title} />
               </li>
             ))
           }
         </ul>
       </section>
     </div>
+    <div>
+      <ContactForm />
+    </div>
   </div>
   <p class='mt-[3em] pb-6 text-center font-bold'>
-    &copy;<span id='year' aria-label='copyright year'></span>&nbsp;Max MTB
+    &copy;<span aria-label='copyright year' id='year'></span>&nbsp;Max MTB
     Coaching
   </p>
   <script>

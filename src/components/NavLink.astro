@@ -3,7 +3,7 @@ const { title, path, currentPath } = Astro.props
 ---
 
 <li>
-  <a href={path} class={currentPath === path ? 'active' : ''} data-text={title}>
+  <a class={currentPath === path ? 'active' : ''} data-text={title} href={path}>
     {title}
   </a>
 </li>

@@ -9,24 +9,24 @@ import NavLink from './NavLink.astro'
 const currentPath = new URL(Astro.request.url).pathname
 ---
 
-<nav id='main-nav' class='main-nav'>
-  <div id='menu-backdrop' class='backdrop'></div>
-  <a id='logo-link' href='/'>
-    <Image id='logo-img' alt='Max MTB Logo' src={logo} />
+<nav class='main-nav' id='main-nav'>
+  <div class='backdrop' id='menu-backdrop'></div>
+  <a href='/' id='logo-link'>
+    <Image alt='Max MTB Logo' id='logo-img' src={logo} />
   </a>
-  <div id='logo-type' class='logo-type'>
+  <div class='logo-type' id='logo-type'>
     <p>{logoType}</p>
   </div>
-  <button id='menu-button' aria-labelledby='button-label' aria-expanded='false'>
-    <Icon name={'ion:menu'} title='site navigation' focusable={'false'} />
-    <span id='button-label' hidden>Site Navigation</span>
+  <button aria-expanded='false' aria-labelledby='button-label' id='menu-button'>
+    <Icon focusable={'false'} name={'ion:menu'} title='site navigation' />
+    <span hidden id='button-label'>Site Navigation</span>
   </button>
 
   <div id='menu-wrapper'>
     <ul id='menu'>
       {
         navLinks.map(({ title, path }) => (
-          <NavLink title={title} path={path} currentPath={currentPath} />
+          <NavLink currentPath={currentPath} path={path} title={title} />
         ))
       }
     </ul>

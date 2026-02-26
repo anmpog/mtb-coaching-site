@@ -26,11 +26,11 @@ const { imageSrc, altText } = Astro.props
 
 <div class='relative overflow-hidden md:max-h-[32rem]'>
   <!-- Ratio box to force aspect ratio -->
-  <div id='ratio-box' class='pt-[75%]'></div>
+  <div class='pt-[75%]' id='ratio-box'></div>
   <Image
-    src={imageSrc}
     alt={altText}
-    layout='full-width'
     class='absolute inset-0 h-full w-full content-center object-cover'
+    layout='full-width'
+    src={imageSrc}
   />
 </div>
