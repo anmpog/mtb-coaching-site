@@ -23,7 +23,7 @@ const { tagline, heroTitle, heroSubtext } = heroData
       <p class='hero-tagline'>{tagline}</p>
       <h1 class='hero-title'>{heroTitle}</h1>
       <p class='hero-subtext'>{heroSubtext}</p>
-      <button class='hero-cta'>Book Now</button>
+      <button class='btn btn-primary'>Book Now</button>
     </div>
   </div>
   <SideBySide contentDirection='content-image'>
@@ -105,15 +105,6 @@ const { tagline, heroTitle, heroSubtext } = heroData
     text-align: center;
     color: white;
     text-transform: uppercase;
-  }
-
-  .hero-cta {
-    @apply border border-neutral-950 bg-neutral-950 px-7 py-2 text-neutral-200;
-    box-sizing: border-box;
-  }
-
-  .hero-cta:hover {
-    @apply border border-neutral-950 bg-neutral-200 text-neutral-950 transition-colors duration-500;
   }
 
   /* 768px comes from default "medium screen" value in Tailwind 3 */

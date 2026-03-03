@@ -29,6 +29,21 @@
   }
 }
 
+/* Components */
+@layer components {
+  .btn {
+    @apply border border-neutral-950 px-7 py-2;
+  }
+
+  .btn-primary {
+    @apply bg-neutral-950 text-neutral-200;
+  }
+
+  .btn-primary:hover {
+    @apply border border-neutral-950 bg-neutral-200 text-neutral-950 transition-colors duration-500;
+  }
+}
+
 /* 
 * Utility Classes 
 */

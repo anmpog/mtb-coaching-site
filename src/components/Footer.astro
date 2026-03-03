@@ -7,12 +7,14 @@ import ContactForm from './ContactForm.astro'
 const { logoType, siteTitle, contactInfo, socialLinks } = siteData
 ---
 
-<footer class='min-h-36 bg-[var(--footer-bg-color)]'>
+<footer class='min-h-36 bg-[var(--footer-bg-color)] pt-9'>
   <div class='mx-auto grid max-w-4xl grid-cols-1 p-4 md:grid-cols-2 md:gap-4'>
-    <div class='flex flex-col justify-center md:col-span-1'>
-      <Image alt='Max MTB Logo' src={logo} />
-      <span class='font-heading text-xl tracking-wider'>{siteTitle}</span>
-      <p>{logoType}</p>
+    <div class='flex flex-col gap-8 md:col-span-1'>
+      <section>
+        <Image alt='Max MTB Logo' src={logo} />
+        <span class='font-heading text-xl tracking-wider'>{siteTitle}</span>
+        <p>{logoType}</p>
+      </section>
       <section>
         <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
           Contact
