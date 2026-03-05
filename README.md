@@ -69,3 +69,11 @@ import NavLink from './NavLink.astro'
 ```
 
 This reduces (or, ideally, eliminates) the need to update multiple files at once manually. If the data is structured thoughtfully and rendered dynamically, the possibility of making errors is dramatically reduced and our site is more flexible and easier to update.
+
+## Honeypot Field(s)
+
+Forms on this site will/should contain a "honeypot" field. This is a field that is designed to trick automated scrapers/bots (which are usually responsible for spam) into filling in the field. The field is not viewable or accessible to human users, so the inclusion of this field's value in the event of a form submission is indicative of a bot submitting the form. This makes it easier to reject/ignore the function on the server. The initial implementation is to make the field look like an "email confirmation" field, because scrapers are potentially sophisticated enough to skip fields that are obviously labelled as honeypot fields. I expect this to change as Netlify (and other hosting providers) have tools for helping mitigate spam.
+
+## Obfuscating Contact Information
+
+I anticipate that displaying plain contact information on the website probably generates a lot of noise, so I wanted to specifically attempt to cut down on this noise by obfuscating the contact information on the website. In the interest of not over-engineering an approach, I referenced [this article](https://spencermortensen.com/articles/email-obfuscation/) by one Spencer Mortensen, which seems to show a sound, up to date exploration of various obfuscation techniques and their success tested against numerous scrapers/bots.

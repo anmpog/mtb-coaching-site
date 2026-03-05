@@ -1,4 +1,11 @@
+---
+import Honeypot from '../components/Honeypot.astro'
+---
+
 <form>
+  <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
+    Drop Us A Line
+  </h2>
   <div class='form-control'>
     <label for='name'>Your Name</label>
     <input
@@ -28,6 +35,7 @@
       Enter a correctly formatted email address.
     </p>
   </div>
+  <Honeypot />
   <div class='form-control'>
     <label for='subject'>Subject</label>
     <input
@@ -58,7 +66,7 @@
       required
       rows='6'></textarea>
     <p class='message-error' id='message-error'>
-      Please enter a longer message.
+      Enter a longer message (10 characters).
     </p>
   </div>
   <input class='btn btn-primary w-48 self-end' type='submit' value='Submit' />
@@ -122,10 +130,4 @@
   .form-control textarea:user-invalid:not(:placeholder-shown) {
     @apply border-red-700;
   }
-
-  /* Green border when valid and touched */
-  /* .form-control input:valid:not(:placeholder-shown),
-  .form-control textarea:valid:not(:placeholder-shown) {
-    border-color: #15803d;
-  } */
 </style>
