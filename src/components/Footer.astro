@@ -2,9 +2,9 @@
 import { Image } from 'astro:assets'
 import logo from '../assets/max-mtb-logo-lowres.png'
 import siteData from '../data/site-data.json'
-import IconLink from './IconLink.astro'
 import ContactForm from './ContactForm.astro'
-const { logoType, siteTitle, contactInfo, socialLinks } = siteData
+import SocialLinks from './SocialLinks.astro'
+const { logoType, siteTitle, contactInfo } = siteData
 ---
 
 <footer class='min-h-36 bg-[var(--footer-bg-color)] pt-9'>
@@ -49,15 +49,7 @@ const { logoType, siteTitle, contactInfo, socialLinks } = siteData
         <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
           Follow us
         </h2>
-        <ul aria-label='Social media links' class='flex gap-3'>
-          {
-            socialLinks.map(({ title, address, iconName }) => (
-              <li>
-                <IconLink address={address} iconName={iconName} title={title} />
-              </li>
-            ))
-          }
-        </ul>
+        <SocialLinks />
       </section>
     </div>
     <div>

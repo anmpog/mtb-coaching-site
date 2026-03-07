@@ -1,0 +1,15 @@
+---
+import IconLink from './IconLink.astro'
+import SiteData from '../data/site-data.json'
+const { socialLinks } = SiteData
+---
+
+<ul aria-label='Social media links' class='flex gap-3'>
+  {
+    socialLinks.map(({ title, address, iconName }) => (
+      <li>
+        <IconLink address={address} iconName={iconName} title={title} />
+      </li>
+    ))
+  }
+</ul>
