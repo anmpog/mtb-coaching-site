@@ -1,31 +1,15 @@
 ---
-import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
-import heroImage from '../assets/hero-img-lowres.jpg'
-import heroData from '../data/site-data.json'
 import SideBySide from '../components/SideBySide.astro'
 import sideBySideImg1 from '../assets/home-side-by-side-1.jpg'
 import sideBySideImg2 from '../assets/home-side-by-side-2.jpg'
 import SideBySideText from '../components/SideBySideText.astro'
 import SideBySideImage from '../components/SideBySideImage.astro'
-const { tagline, heroTitle, heroSubtext } = heroData
+import HeroImage from '../components/HeroImage.astro'
 ---
 
 <Layout pageTitle='Home'>
-  <div class='parallax'>
-    <Image
-      alt='Image of Max coaching several riders'
-      class='hero-background'
-      layout='full-width'
-      src={heroImage}
-    />
-    <div class='hero-text'>
-      <p class='hero-tagline'>{tagline}</p>
-      <h1 class='hero-title'>{heroTitle}</h1>
-      <p class='hero-subtext'>{heroSubtext}</p>
-      <button class='btn btn-primary'>Book Now</button>
-    </div>
-  </div>
+  <HeroImage />
   <SideBySide contentDirection='content-image'>
     <SideBySideImage
       altText='An picture of Max and a client examining trail conditions'
@@ -52,89 +36,3 @@ const { tagline, heroTitle, heroSubtext } = heroData
     />
   </SideBySide>
 </Layout>
-<style>
-  .parallax {
-    position: relative;
-    min-height: calc(100vh - var(--nav-height-mobile));
-    display: grid;
-    grid-template-areas: 'stack';
-    align-content: stretch;
-    overflow-x: hidden;
-  }
-
-  .parallax > * {
-    grid-area: stack;
-  }
-
-  .hero-background {
-    display: block;
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-  }
-
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    align-self: start;
-    justify-self: center;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    height: 100%;
-    background-color: rgb(0 0 0 / 50%);
-    gap: 1.5rem;
-  }
-
-  .hero-tagline {
-    color: white;
-    text-transform: uppercase;
-  }
-
-  .hero-subtext {
-    @apply text-xl;
-    color: white;
-    text-transform: capitalize;
-    text-align: center;
-  }
-
-  .hero-title {
-    @apply text-6xl;
-    @apply tracking-widest;
-    font-family: 'Raleway';
-    text-align: center;
-    color: white;
-    text-transform: uppercase;
-  }
-
-  /* 768px comes from default "medium screen" value in Tailwind 3 */
-  /* @media (width >= 768px) { */
-  @media (width >= 768px) {
-    .parallax {
-      min-height: 75vh;
-    }
-
-    .hero-subtext {
-      @apply text-2xl;
-    }
-
-    .hero-tagline {
-      @apply text-lg;
-    }
-
-    .hero-title {
-      @apply text-8xl;
-      letter-spacing: 1rem;
-    }
-
-    .hero-text {
-      @apply px-8 py-4;
-      border: 2px solid;
-      border-color: var(--active-link);
-      max-width: 85ch;
-      background-color: rgb(0 0 0 / 50%);
-      margin-top: 6em;
-      height: auto;
-    }
-  }
-</style>
