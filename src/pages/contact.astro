@@ -2,14 +2,14 @@
 import Layout from '../layouts/Layout.astro'
 import SideBySide from '../components/SideBySide.astro'
 import SideBySideImage from '../components/SideBySideImage.astro'
-import SideBySideText from '../components/SideBySideText.astro'
+import SideBySideContent from '../components/SideBySideContent.astro'
 import ContactHaveAQuestionImg from '../assets/contact-have-a-question-img.jpeg'
 ---
 
 <Layout pageTitle='Contact'>
   <h1>Contact</h1>
   <SideBySide contentDirection='image-content'>
-    <SideBySideText
+    <SideBySideContent
       content=`Please don't hesitate to contact us, always happy to chat. Want to book a lesson? Perhaps you have a group of 4+ friends you would like to do your own private clinic with? Interested in online coaching? Or maybe there is another skill clinic you would be interested in that you don't see on the Skills Clinic page? Or perhaps you are visiting and are looking for a local guide to show you all the local trails? Please reach out and let us know, we would love to hear from you!`
       contentTitle='Have a question?'
       slot='content'

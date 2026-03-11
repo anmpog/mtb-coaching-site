@@ -1,0 +1,42 @@
+---
+export interface Props {
+  /**
+   * A title for the textual content. Will be fully uppercase.
+   */
+  contentTitle: string
+  /**
+   * The text content to display. Use backticks (``) to avoid having to escape special characters. Will appear under the content title.
+   */
+  content: string
+}
+
+/**
+ * @slot non-textual-content - Optional additional content rendered below the text, e.g. a form component
+ */
+
+const { contentTitle, content } = Astro.props
+const hasNonTextualContent = Astro.slots.has('non-textual-content')
+---
+
+<div
+  class='flex h-full flex-col px-6 py-14 font-sans outline-2 outline-red-400'
+  id='side-by-side-text'
+>
+  <div class='flex h-full flex-col justify-center'>
+    <div class='flow-content' id='text-content'>
+      <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
+        {contentTitle}
+      </h2>
+      <p class='max-w-[45ch]'>
+        {content}
+      </p>
+    </div>
+    {
+      hasNonTextualContent ? (
+        <div class='mt-3' id='non-textual-content'>
+          <slot name='non-textual-content' />
+        </div>
+      ) : null
+    }
+  </div>
+</div>
