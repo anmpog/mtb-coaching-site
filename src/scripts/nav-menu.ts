@@ -5,12 +5,16 @@ const navMenuBackdrop = document.getElementById(
   'menu-backdrop',
 ) as HTMLDivElement
 const navMenuWrapper = document.getElementById('menu-wrapper') as HTMLDivElement
+const mainContent = document.getElementById('main-content') as HTMLElement
+const footer = document.getElementById('footer') as HTMLElement
 
 function openMenu() {
   navMenuButton.setAttribute('aria-expanded', 'true')
   navMenuWrapper.classList.add('expanded')
   navMenuBackdrop.classList.add('blur')
   document.body.classList.add('block-scroll')
+  mainContent.inert = true
+  footer.inert = true
 
   window.addEventListener('keydown', detectEscKeyPress)
   window.addEventListener('click', detectClickOutsideMenu)
@@ -21,6 +25,8 @@ function closeMenu() {
   navMenuWrapper.classList.remove('expanded')
   navMenuBackdrop.classList.remove('blur')
   document.body.classList.remove('block-scroll')
+  mainContent.inert = false
+  footer.inert = false
 
   window.removeEventListener('keydown', detectEscKeyPress)
   window.removeEventListener('click', detectClickOutsideMenu)

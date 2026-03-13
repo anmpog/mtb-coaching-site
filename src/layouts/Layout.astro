@@ -25,10 +25,10 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
     <header>
       <Navigation />
     </header>
-    <main class='h-full flex-1'>
+    <main class='h-full flex-1' id='main-content'>
       <slot />
     </main>
-    <footer>
+    <footer id='footer'>
       <Footer />
     </footer>
   </body>
