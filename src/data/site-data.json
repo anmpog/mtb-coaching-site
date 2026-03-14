@@ -1,0 +1,42 @@
+{
+  "siteTitle": "MAX MTB Coaching",
+  "logoType": "Professional Mountain Bike Coaching",
+  "heroTitle": "Max MTB Coaching",
+  "heroSubtext": "Professional mountain bike coaching for all skill levels",
+  "tagline": "Take your mountain biking to the max",
+  "aboutPage": {
+    "bioText": "My love affair with bikes started when I was a young kid who would cycle to school every day with his buddies and practice wheelies the whole way. This led to getting a bmx and riding skateparks and dirt jumps and then trials bikes. In 2010 I moved to Whistler, B.C. for a ski season, tried mountain biking and was completely hooked and have been ever since! For me, I love riding everything, whether that's Horsetooth or Berthoud and Valmont bike park or San Clemente flow trails and Laguna steeps, dirt jumps, skatepark, bike park or technical trails in B.C. and Whistler. I love riding it all and want to share the stoke with other riders and give them the skills and confidence to ride a variety of terrain.\r\n\rI've always loved teaching, whether it's being a ski instructor or introducing friends to the gym or helping buddies ride a section of trail for the first time. I love seeing the progression through a lesson, seeing riders hit their first jump or double with confidence, hit drops they never thought they could, or cleanly ride sections of trail that previously intimidated them, all with confidence.",
+    "approachText": "Max MTB Coaching was born from a passion for cycling and teaching, sharing that enthusiasm and getting others stoked on bikes. Our goal is to help riders bring their riding to the next level. Breaking down techniques and building consistency to ultimately get riders safely out on the trails with confidence and a smile on their face. The idea is to create well rounded riders with a broad skill set, allowing them to succeed regardless of the terrain, features and trails they encounter. We offer both private and small group coaching as well as a variety of skills clinics. No matter your goals, we're here to help you reach them."
+  },
+  "contactInfo": [
+    { "type": "tel", "address": "1-310-970-4666", "label": "phone" },
+    {
+      "type": "mailto",
+      "address": "maxmtbcoaching@gmail.com",
+      "label": "email"
+    }
+  ],
+  "socialLinks": [
+    {
+      "title": "facebook",
+      "address": "https://www.facebook.com/profile.php?id=61553850148218",
+      "iconName": "logo-facebook"
+    },
+    {
+      "title": "instagram",
+      "address": "https://www.instagram.com/maximillianmitchell/61553850148218",
+      "iconName": "logo-instagram"
+    },
+    {
+      "title": "youtube",
+      "address": "https://www.youtube.com/@maximillianmitchell4380?sub_confirmation=1",
+      "iconName": "logo-youtube"
+    }
+  ],
+  "navLinks": [
+    { "title": "Home", "path": "/" },
+    { "title": "About", "path": "/about" },
+    { "title": "Services", "path": "/services" },
+    { "title": "Contact", "path": "/contact" }
+  ]
+}

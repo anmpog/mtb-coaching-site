@@ -1,10 +1,40 @@
 ---
 import Layout from '../layouts/Layout.astro'
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import SideBySide from '../components/SideBySide.astro'
+import sideBySideImg1 from '../assets/home-side-by-side-1.jpg'
+import sideBySideImg2 from '../assets/home-side-by-side-2.jpg'
+import SideBySideContent from '../components/SideBySideContent.astro'
+import SideBySideImage from '../components/SideBySideImage.astro'
+import HeroImage from '../components/HeroImage.astro'
+import SignUpForm from '../components/SignUpForm.astro'
 ---
 
-<Layout>
-  <h1>Home</h1>
+<Layout pageTitle='Home'>
+  <HeroImage />
+  <SideBySide contentDirection='content-image'>
+    <SideBySideImage
+      altText='An picture of Max and a client examining trail conditions'
+      imageSrc={sideBySideImg1}
+      slot='image'
+    />
+    <SideBySideContent
+      content=`Max MTB Coaching is a professional mountain bike coaching service based in Southern California, including the Los Angeles area, Orange County and San Diego County. Our mission is to help riders of all abilities bring their skills and confidence to new levels. Whether you're just starting out or looking to refine your technique, our private and small group coaching sessions and skills clinics are designed to help you achieve your goals. We're passionate about mountain biking and want to share our knowledge and expertise with you.`
+      contentTitle='About Us'
+      slot='content'
+    />
+  </SideBySide>
+  <SideBySide contentDirection='image-content'>
+    <SideBySideImage
+      altText='A picture of Max bunny-hopping against a background of the sunset and the ocean'
+      imageSrc={sideBySideImg2}
+      slot='image'
+    />
+    <SideBySideContent
+      content={'Subscribe to our newsletter to receive news and upcoming clinics.'}
+      contentTitle='Be the first to know'
+      slot='content'
+    >
+      <SignUpForm slot='non-textual-content' />
+    </SideBySideContent>
+  </SideBySide>
 </Layout>

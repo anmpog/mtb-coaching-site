@@ -1,0 +1,75 @@
+---
+import Honeypot from '../components/Honeypot.astro'
+---
+
+<form aria-label='Contact Us Form' id='contact'>
+  <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
+    Drop Us A Line
+  </h2>
+  <div class='form-control'>
+    <label for='name'>Your Name</label>
+    <input
+      aria-describedby='name-error'
+      autocomplete='given-name'
+      id='name'
+      maxlength='100'
+      minlength='2'
+      name='name'
+      placeholder='e.g. Brandon Semenuk'
+      required
+      type='text'
+    />
+    <p class='name-error' id='name-error'>Name must be longer.</p>
+  </div>
+  <div class='form-control'>
+    <label for='contact-email'>Your Email</label>
+    <input
+      aria-describedby='contact-email-error'
+      autocomplete='email'
+      id='contact-email'
+      maxlength='254'
+      name='contact-email'
+      placeholder='e.g. your-address@domain.com'
+      required
+      type='email'
+    />
+    <p class='contact-email-error' id='contact-email-error'>
+      Enter a correctly formatted email address.
+    </p>
+  </div>
+  <Honeypot />
+  <div class='form-control'>
+    <label for='subject'>Subject</label>
+    <input
+      aria-describedby='subject-error'
+      autocomplete='off'
+      id='subject'
+      maxlength='150'
+      minlength='3'
+      name='subject'
+      placeholder='e.g. Want to learn manuals!'
+      required
+      type='text'
+    />
+    <p class='subject-error' id='subject-error'>
+      Enter a longer subject (3 characters).
+    </p>
+  </div>
+  <div class='form-control'>
+    <label for='message'>Message</label>
+    <textarea
+      aria-describedby='message-error'
+      autocomplete='off'
+      id='message'
+      maxlength='1000'
+      minlength='10'
+      name='message'
+      placeholder='Can you teach me how to manual this week?'
+      required
+      rows='6'></textarea>
+    <p class='message-error' id='message-error'>
+      Enter a longer message (10 characters).
+    </p>
+  </div>
+  <input class='btn btn-primary w-48 self-end' type='submit' value='Submit' />
+</form>

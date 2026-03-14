@@ -1,0 +1,31 @@
+<div class='form-control'>
+  <label for='confirm-email-error'>Confirm Email</label>
+  <input
+    aria-describedby='confirm-email-error'
+    aria-hidden='true'
+    autocomplete='off'
+    id='confirm-email'
+    maxlength='254'
+    minlength='2'
+    name='confirm-email'
+    placeholder='e.g. Confirm Email'
+    required
+    tabindex='-1'
+    type='text'
+  />
+  <p class='confirm-email-error' id='confirm-email-error'>
+    Please confirm your email address.
+  </p>
+</div>
+<style>
+  .form-control {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    height: 0;
+    width: 0;
+    z-index: -9999;
+    overflow: hidden;
+    pointer-events: none;
+  }
+</style>

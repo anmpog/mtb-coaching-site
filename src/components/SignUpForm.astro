@@ -1,0 +1,24 @@
+---
+import Honeypot from './Honeypot.astro'
+---
+
+<form aria-label='Newsletter Sign Up Form' id='signup'>
+  <div class='form-control'>
+    <label for='newsletter-email'>Enter Your Email</label>
+    <input
+      aria-describedby='newsletter-email-error'
+      autocomplete='email'
+      id='newsletter-email'
+      maxlength='254'
+      name='newsletter-email'
+      placeholder='e.g. your-address@domain.com'
+      required
+      type='email'
+    />
+    <p class='newsletter-email-error' id='newsletter-email-error'>
+      Enter a correctly formatted email address.
+    </p>
+  </div>
+  <Honeypot />
+  <input class='btn-secondary' type='submit' value='Submit' />
+</form>

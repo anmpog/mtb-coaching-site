@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Screen sizes based on tailwind-3 defaults */
+    --screen-sm: 640px;
+    --screen-md: 768px;
+    --screen-lg: 1024px;
+    --screen-xl: 1280px;
+    --screen-2xl: 1536px;
+
+    /* Component Variables */
+    --nav-height-mobile: theme('height.24');
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 900;
+    src: url('@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2')
+      format('woff2');
+  }
+}
+
+/* Components */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply px-7 py-2;
+  }
+
+  .btn-primary {
+    @apply border border-neutral-950 bg-neutral-950 text-neutral-200;
+  }
+
+  .btn-primary:hover {
+    @apply bg-neutral-200 text-neutral-950 transition-colors duration-500;
+  }
+
+  .btn-secondary {
+    @apply btn border border-active-link bg-active-link text-slate-50 transition-colors duration-500 hover:bg-neutral-200 hover:text-active-link;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-neutral-200 text-active-link;
+  }
+
+  /* Form Fields */
+  form {
+    @apply flex flex-col gap-2;
+  }
+
+  .form-control {
+    @apply flex flex-col;
+  }
+
+  .form-control label {
+    @apply font-semibold;
+  }
+
+  .form-control input,
+  .form-control textarea {
+    @apply mt-1 border-2 border-neutral-950 p-1.5;
+  }
+
+  .form-control textarea {
+    @apply resize-none;
+  }
+
+  /* Hide errors by default */
+  .form-control [class$='-error'] {
+    @apply invisible text-sm font-semibold text-red-700;
+  }
+
+  /* FALLBACK: only active if browser does not support :user-invalid */
+  @supports not selector(:user-invalid) {
+    /* This selector is whack. The thought is:
+        * placeholder not shown means user interacted
+        * don't want error to show during focus
+        * want error to show if input is invalid
+        * targets visibility of <p> with error class
+    */
+    .form-control
+      input:invalid:not(:focus):not(:placeholder-shown)
+      ~ [class$='-error'],
+    .form-control
+      textarea:invalid:not(:focus):not(:placeholder-shown)
+      ~ [class$='-error'] {
+      visibility: visible;
+    }
+  }
+
+  /* ENHANCED: only active in browsers that support :user-invalid */
+  @supports selector(:user-invalid) {
+    .form-control input:user-invalid ~ [class$='-error'],
+    .form-control textarea:user-invalid ~ [class$='-error'] {
+      visibility: visible;
+    }
+  }
+
+  /* Red border while invalid and touched */
+  .form-control input:user-invalid:not(:placeholder-shown),
+  .form-control textarea:user-invalid:not(:placeholder-shown) {
+    @apply border-red-700;
+  }
+}
+
+/* 
+* Utility Classes 
+*/
+
+/* This class is applied to the <body> when nav menu is open */
+.block-scroll {
+  position: relative;
+  height: 100vh;
+  overflow-y: hidden;
+  touch-action: none;
+}
+
+.flow-content * + * {
+  margin-top: 1.5em;
+}
+
+@media (min-width: theme('screens.md')) {
+  /* Utility classes to work alongside side-by-side component */
+  #side-by-side[data-content-direction='image-content'] #side-by-side-text {
+    align-items: flex-start;
+  }
+
+  #side-by-side[data-content-direction='content-image'] #side-by-side-text {
+    align-items: flex-end;
+  }
+}
