@@ -6,7 +6,10 @@ import { Image } from 'astro:assets'
 import logo from '../assets/max-mtb-logo-lowres.png'
 import NavLink from './NavLink.astro'
 
-const currentPath = new URL(Astro.request.url).pathname
+const requestPath = new URL(Astro.request.url).pathname
+
+// Normalizing path because production env adds trailing slash
+const currentPath = requestPath.split('/')[1]
 ---
 
 <nav class='main-nav' id='main-nav'>
