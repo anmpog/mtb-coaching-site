@@ -1,19 +1,43 @@
-<div class='form-control'>
-  <label for='confirm-email-error'>Confirm Email</label>
+---
+export interface Props {
+  /**
+   * Must match the `id` attribute of the enclosing `<form>` element.
+   * Used to namespace the honeypot field's id, name, and error elements.
+   *
+   * @example
+   * <form id="signup">
+   *   <Honeypot formName="signup" />
+   * </form>
+   *
+   * @default: 'form'
+   */
+  formName?: string
+}
+
+const { formName = 'form' } = Astro.props
+
+// Linter was complaining about string interpolation
+const formId = `${formName}-confirm-email`
+---
+
+<div aria-hidden='true' class='form-control'>
+  <label for={formId}>Confirm Email</label>
   <input
-    aria-describedby='confirm-email-error'
-    aria-hidden='true'
+    aria-describedby={`${formName}-confirm-email-error`}
     autocomplete='off'
-    id='confirm-email'
+    id={formId}
     maxlength='254'
     minlength='2'
-    name='confirm-email'
+    name={formId}
     placeholder='e.g. Confirm Email'
     required
     tabindex='-1'
     type='text'
   />
-  <p class='confirm-email-error' id='confirm-email-error'>
+  <p
+    class={`${formName}-confirm-email-error`}
+    id={`${formName}-confirm-email-error`}
+  >
     Please confirm your email address.
   </p>
 </div>

@@ -2,7 +2,13 @@
 import Honeypot from './Honeypot.astro'
 ---
 
-<form aria-label='Newsletter Sign Up Form' id='signup'>
+<form
+  aria-label='Newsletter Sign Up Form'
+  data-netlify='true'
+  id='signup'
+  name='newsletter'
+  netlify-honeypot='signup'
+>
   <div class='form-control'>
     <label for='newsletter-email'>Enter Your Email</label>
     <input
@@ -19,6 +25,6 @@ import Honeypot from './Honeypot.astro'
       Enter a correctly formatted email address.
     </p>
   </div>
-  <Honeypot />
+  <Honeypot formName='signup' />
   <input class='btn-secondary' type='submit' value='Submit' />
 </form>
