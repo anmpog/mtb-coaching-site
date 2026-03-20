@@ -11,32 +11,26 @@ export interface Props {
    *
    * @default: 'form'
    */
-  formName?: string
+  netlifyHoneypotName?: string
 }
 
-const { formName = 'form' } = Astro.props
-
-// Linter was complaining about string interpolation
-const formId = `${formName}-confirm-email`
+const { netlifyHoneypotName = 'form' } = Astro.props
 ---
 
 <div aria-hidden='true' class='form-control'>
-  <label for={formId}>Confirm Email</label>
+  <label for='confirmation-field'>Confirm Email</label>
   <input
-    aria-describedby={`${formName}-confirm-email-error`}
+    aria-describedby='confirmation-field-error'
     autocomplete='off'
-    id={formId}
+    id='confirmation-field'
     maxlength='254'
     minlength='2'
-    name={formId}
+    name={netlifyHoneypotName}
     placeholder='e.g. Confirm Email'
     tabindex='-1'
-    type='text'
+    type='email'
   />
-  <p
-    class={`${formName}-confirm-email-error`}
-    id={`${formName}-confirm-email-error`}
-  >
+  <p class='confirmation-field-error' id='confirmation-field-error'>
     Please confirm your email address.
   </p>
 </div>
