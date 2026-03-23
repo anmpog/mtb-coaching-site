@@ -7,16 +7,22 @@ export interface Props {
    * Imported image metadata.
    *
    * @example
+   * ```
    * import MyImage from '../assets/my-image.jpg'
    * <SideBySideImage imageSrc={MyImage} />
+   * ```
    */
   imageSrc: ImageMetadata
+
   /**
    * A short but descriptive string that describes the image for users who are
    * relying on screen readers.
    *
    * @example
+   *
+   * ```ts
    * <SideBySideImage altText='An image of a mountain biker smiling' />
+   * ```
    */
   altText: string
 }
