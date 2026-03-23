@@ -1,8 +1,14 @@
 ---
-import Honeypot from '../components/Honeypot.astro'
+import Honeypot from './Honeypot.astro'
 ---
 
-<form aria-label='Contact Us Form' id='contact'>
+<form
+  aria-label='Contact Us Form'
+  data-netlify='true'
+  id='contact'
+  name='contact'
+  netlify-honeypot=''
+>
   <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
     Drop Us A Line
   </h2>
@@ -37,7 +43,7 @@ import Honeypot from '../components/Honeypot.astro'
       Enter a correctly formatted email address.
     </p>
   </div>
-  <Honeypot />
+  <Honeypot netlifyHoneypotName='contact-confirm' />
   <div class='form-control'>
     <label for='subject'>Subject</label>
     <input
