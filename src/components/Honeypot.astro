@@ -17,7 +17,7 @@ export interface Props {
 const { netlifyHoneypotName = 'form' } = Astro.props
 ---
 
-<div aria-hidden='true' class='form-control'>
+<div aria-hidden='true' class='form-control' data-optional>
   <label for='confirmation-field'>Confirm Email</label>
   <input
     aria-describedby='confirmation-field-error'

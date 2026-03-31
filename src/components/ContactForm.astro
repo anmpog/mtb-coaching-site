@@ -4,6 +4,7 @@ import Honeypot from './Honeypot.astro'
 
 <form
   aria-label='Contact Us Form'
+  data-action='contactUsForm'
   data-netlify='true'
   id='contact'
   name='contact'
@@ -25,7 +26,13 @@ import Honeypot from './Honeypot.astro'
       required
       type='text'
     />
-    <p class='name-error' id='name-error'>Name must be longer.</p>
+    <p
+      class='name-error'
+      data-default-error-message='Name must be longer.'
+      id='name-error'
+    >
+      Name must be longer.
+    </p>
   </div>
   <div class='form-control'>
     <label for='contact-email'>Your Email</label>
@@ -39,7 +46,11 @@ import Honeypot from './Honeypot.astro'
       required
       type='email'
     />
-    <p class='contact-email-error' id='contact-email-error'>
+    <p
+      class='contact-email-error'
+      data-default-error-message='Enter a correctly formatted email address.'
+      id='contact-email-error'
+    >
       Enter a correctly formatted email address.
     </p>
   </div>
@@ -57,7 +68,11 @@ import Honeypot from './Honeypot.astro'
       required
       type='text'
     />
-    <p class='subject-error' id='subject-error'>
+    <p
+      class='subject-error'
+      data-default-error-message='Enter a longer subject (3 characters).'
+      id='subject-error'
+    >
       Enter a longer subject (3 characters).
     </p>
   </div>
@@ -73,9 +88,16 @@ import Honeypot from './Honeypot.astro'
       placeholder='Can you teach me how to manual this week?'
       required
       rows='6'></textarea>
-    <p class='message-error' id='message-error'>
+    <p
+      class='message-error'
+      data-default-error-message='Enter a longer message (10 characters).'
+      id='message-error'
+    >
       Enter a longer message (10 characters).
     </p>
   </div>
   <input class='btn btn-primary w-48 self-end' type='submit' value='Submit' />
+  <script>
+    import '../scripts/form-submit'
+  </script>
 </form>
