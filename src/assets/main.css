@@ -71,8 +71,14 @@
   }
 
   /* Hide errors by default */
-  .form-control [class$='-error'] {
-    @apply invisible text-sm font-semibold text-red-700;
+  .form-control [class*='-error'] {
+    /* @apply invisible text-sm font-semibold text-red-700; */
+    @apply text-sm font-semibold text-red-700;
+    visibility: hidden;
+  }
+
+  .form-control [class*='-error'].visible {
+    visibility: visible;
   }
 
   /* FALLBACK: only active if browser does not support :user-invalid */
@@ -85,18 +91,18 @@
     */
     .form-control
       input:invalid:not(:focus):not(:placeholder-shown)
-      ~ [class$='-error'],
+      ~ [class*='-error'],
     .form-control
       textarea:invalid:not(:focus):not(:placeholder-shown)
-      ~ [class$='-error'] {
+      ~ [class*='-error'] {
       visibility: visible;
     }
   }
 
   /* ENHANCED: only active in browsers that support :user-invalid */
   @supports selector(:user-invalid) {
-    .form-control input:user-invalid ~ [class$='-error'],
-    .form-control textarea:user-invalid ~ [class$='-error'] {
+    .form-control input:user-invalid ~ [class*='-error'],
+    .form-control textarea:user-invalid ~ [class*='-error'] {
       visibility: visible;
     }
   }

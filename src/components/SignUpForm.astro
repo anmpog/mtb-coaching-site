@@ -4,9 +4,10 @@ import Honeypot from './Honeypot.astro'
 
 <form
   aria-label='Newsletter Sign Up Form'
+  data-action='signUpForm'
   data-netlify='true'
-  id='newsletter'
-  name='newsletter'
+  id='newsletter-form'
+  name='newsletter-form'
   netlify-honeypot='newsletter-confirm'
 >
   <div class='form-control'>
@@ -21,10 +22,17 @@ import Honeypot from './Honeypot.astro'
       required
       type='email'
     />
-    <p class='newsletter-email-error' id='newsletter-email-error'>
+    <p
+      class='newsletter-email-error'
+      data-default-error-message='Enter a correctly formatted email address.'
+      id='newsletter-email-error'
+    >
       Enter a correctly formatted email address.
     </p>
   </div>
   <Honeypot netlifyHoneypotName='newsletter-confirm' />
   <input class='btn-secondary' type='submit' value='Submit' />
+  <script>
+    import '../scripts/form-submit'
+  </script>
 </form>
