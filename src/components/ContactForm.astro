@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components'
 import Honeypot from './Honeypot.astro'
 ---
 
@@ -6,8 +7,8 @@ import Honeypot from './Honeypot.astro'
   aria-label='Contact Us Form'
   data-action='contactUsForm'
   data-netlify='true'
-  id='contact'
-  name='contact'
+  id='contact-form'
+  name='contact-form'
   netlify-honeypot='contact-confirm'
 >
   <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
@@ -28,7 +29,7 @@ import Honeypot from './Honeypot.astro'
     />
     <p
       class='name-error'
-      data-default-error-message='Name must be longer.'
+      data-default-error-message='Name must be longer'
       id='name-error'
     >
       Name must be longer.
@@ -48,7 +49,7 @@ import Honeypot from './Honeypot.astro'
     />
     <p
       class='contact-email-error'
-      data-default-error-message='Enter a correctly formatted email address.'
+      data-default-error-message='Enter a correctly formatted email address'
       id='contact-email-error'
     >
       Enter a correctly formatted email address.
@@ -70,7 +71,7 @@ import Honeypot from './Honeypot.astro'
     />
     <p
       class='subject-error'
-      data-default-error-message='Enter a longer subject (3 characters).'
+      data-default-error-message='Enter a longer subject (3 characters)'
       id='subject-error'
     >
       Enter a longer subject (3 characters).
@@ -90,13 +91,23 @@ import Honeypot from './Honeypot.astro'
       rows='6'></textarea>
     <p
       class='message-error'
-      data-default-error-message='Enter a longer message (10 characters).'
+      data-default-error-message='Enter a longer message (10 characters)'
       id='message-error'
     >
       Enter a longer message (10 characters).
     </p>
   </div>
-  <input class='btn btn-primary w-48 self-end' type='submit' value='Submit' />
+  <button
+    class='btn-primary flex items-center justify-center gap-2'
+    type='submit'
+  >
+    <Icon
+      class='contact-form-success'
+      name='ion:checkmark-done-circle-outline'
+      size={24}
+    />
+    <span>Submit</span>
+  </button>
   <script>
     import '../scripts/form-submit'
   </script>

@@ -33,19 +33,27 @@
   }
 
   .btn-primary {
-    @apply border border-neutral-950 bg-neutral-950 text-neutral-200;
+    @apply btn border border-neutral-950 bg-neutral-950 text-neutral-200;
   }
 
   .btn-primary:hover {
     @apply bg-neutral-200 text-neutral-950 transition-colors duration-500;
   }
 
+  .btn-primary:disabled {
+    @apply pointer-events-none bg-neutral-950/75 italic;
+  }
+
   .btn-secondary {
-    @apply btn border border-active-link bg-active-link text-slate-50 transition-colors duration-500 hover:bg-neutral-200 hover:text-active-link;
+    @apply btn border border-active-link bg-active-link text-slate-50;
   }
 
   .btn-secondary:hover {
-    @apply bg-neutral-200 text-active-link;
+    @apply bg-neutral-200 text-active-link transition-colors duration-500;
+  }
+
+  .btn-secondary:disabled {
+    @apply pointer-events-none bg-active-link/75 italic;
   }
 
   /* Form Fields */
@@ -70,15 +78,21 @@
     @apply resize-none;
   }
 
-  /* Hide errors by default */
   .form-control [class*='-error'] {
-    /* @apply invisible text-sm font-semibold text-red-700; */
     @apply text-sm font-semibold text-red-700;
     visibility: hidden;
   }
 
   .form-control [class*='-error'].visible {
     visibility: visible;
+  }
+
+  form[id$='-form'] button[type='submit'] svg[class$='-success'] {
+    display: none;
+  }
+
+  form[id$='-form'] button[type='submit'] svg[class$='-success'].visible {
+    display: inline;
   }
 
   /* FALLBACK: only active if browser does not support :user-invalid */

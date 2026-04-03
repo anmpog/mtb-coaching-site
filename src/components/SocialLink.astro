@@ -27,7 +27,7 @@ export interface Props {
 const { title, address, iconName, size = 36 } = Astro.props
 ---
 
-<a href={address} title={`Follow us on ${title}`}>
+<a href={address} title={title}>
   <Icon
     aria-hidden='true'
     focusable='false'
