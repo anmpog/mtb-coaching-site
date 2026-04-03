@@ -8,7 +8,11 @@ const { socialLinks } = SiteData
   {
     socialLinks.map(({ title, address, iconName }) => (
       <li>
-        <IconLink address={address} iconName={iconName} title={title} />
+        <IconLink
+          address={address}
+          iconName={iconName}
+          title={`Follow us on ${title}`}
+        />
       </li>
     ))
   }

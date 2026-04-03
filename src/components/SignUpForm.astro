@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components'
 import Honeypot from './Honeypot.astro'
 ---
 
@@ -31,7 +32,17 @@ import Honeypot from './Honeypot.astro'
     </p>
   </div>
   <Honeypot netlifyHoneypotName='newsletter-confirm' />
-  <input class='btn-secondary' type='submit' value='Submit' />
+  <button
+    class='btn-secondary flex items-center justify-center gap-2'
+    type='submit'
+  >
+    <Icon
+      class='newsletter-form-success'
+      name='ion:checkmark-done-circle-outline'
+      size={24}
+    />
+    <span>Submit</span>
+  </button>
   <script>
     import '../scripts/form-submit'
   </script>
