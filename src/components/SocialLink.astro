@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components'
+
 export interface Props {
   /**
    * @param title - A title for the social link
@@ -22,8 +24,6 @@ export interface Props {
    */
   size?: number
 }
-
-import { Icon } from 'astro-icon/components'
 const { title, address, iconName, size = 36 } = Astro.props
 ---
 

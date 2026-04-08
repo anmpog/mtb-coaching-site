@@ -5,13 +5,14 @@ export interface Props {
    */
   contentTitle: string
   /**
-   * The text content to display. Use backticks (``) to avoid having to escape special characters. Will appear under the content title.
+   * The text content to display. Use backticks (\`\`) to avoid having to escape special characters. Will appear under the content title.
    */
   content: string
 }
 
 /**
- * @slot non-textual-content - Optional additional content rendered below the text, e.g. a form component
+ * Optional additional content rendered below the text, e.g. a form component
+ * @slot non-textual-content
  */
 
 const { contentTitle, content } = Astro.props

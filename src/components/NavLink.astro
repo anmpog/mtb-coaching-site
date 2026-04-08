@@ -1,4 +1,21 @@
 ---
+export interface Props {
+  /**
+   * @param title - A string to serve as the human-readable, visually displayed link title
+   */
+  title: string
+
+  /**
+   * @param path - A string that will serve as the href attribute to the underlying <a> element
+   */
+  path: string
+
+  /**
+   * @param currentPath - A generated string value used for applying `.active` styling to nav links based on user's current location in the site
+   */
+  currentPath: string
+}
+
 const { title, path, currentPath } = Astro.props
 ---
 
