@@ -1,5 +1,6 @@
 {
   "name": "site",
+  "license": "UNLICENSED",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -11,6 +12,7 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@astrojs/netlify": "^7.0.6",
     "@astrojs/tailwind": "^6.0.2",
     "@fontsource-variable/raleway": "^5.2.8",
     "@iconify-json/ion": "^1.2.6",

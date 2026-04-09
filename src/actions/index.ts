@@ -21,7 +21,7 @@ export const server = {
         .trim()
         .min(2, { message: 'Name must be longer than 2 characters' })
         .max(100, { message: 'Name cannot exceed 100 characters' })
-        .regex(/^[a-zA-Z\s'\-]+$/, {
+        .regex(/^[a-zA-Z\s'-]+$/, {
           message:
             'Name should only contain letters, spaces, hyphens, and apostrophes',
         }),
