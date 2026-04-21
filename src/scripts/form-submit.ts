@@ -1,16 +1,21 @@
 import { z } from 'zod'
+import * as z4 from 'zod/v4/core'
+import contactFormSchema from '../schemas/contactForm'
 import signUpFormSchema from '../schemas/signUpForm'
 
-export default function initFormHandler(
+const schemaMap = {
+  'contact-form': contactFormSchema,
+  'signup-form': signUpFormSchema,
+}
+
+export default function initFormHandler<T extends z4.$ZodObject>(
   form: HTMLFormElement,
-  validationSchema,
+  validationSchema: T,
 ) {
   // Get form fields in array structure so it's easier iterate over them
   const formFieldsArr = Array.from(
     form.querySelectorAll('.form-control:not([data-optional])'),
   )
-
-  console.log('Form: ', form)
 
   // Map structure so that iteration isn't necessary for updating individual
   // fields
@@ -26,7 +31,7 @@ export default function initFormHandler(
       ) as HTMLParagraphElement
 
       return [
-        inputElem.id,
+        inputElem.name,
         {
           inputElem: inputElem,
           errorElem: errorElem,
@@ -34,6 +39,15 @@ export default function initFormHandler(
       ]
     }),
   )
+
+  // UI elements to update
+  const submitButton = form.querySelector('[type=submit]') as HTMLButtonElement
+  const submitButtonText = form.querySelector(
+    '[type="submit"] span',
+  ) as HTMLSpanElement
+  const submitButtonIcon = form.querySelector(
+    '[type="submit"] svg',
+  ) as HTMLElement
 
   // Listener to reset server-side error visibility on input event
   formFieldMap.forEach((formField) => {
@@ -46,73 +60,64 @@ export default function initFormHandler(
     })
   })
 
-  // Form submission listener/handler with Astro action
+  // Form submission listener + handler
   form.addEventListener('submit', async (event) => {
-    event.preventDefault()
-    const formData = Object.fromEntries(new FormData(form))
-    console.log('Form data: ', formData)
-    const rawForm = new FormData(form)
-    console.log('raw form: ', rawForm)
+    try {
+      event.preventDefault()
+      const formData = Object.fromEntries(new FormData(form))
 
-    // Validation success/error state
-    const { success: zodSuccess, error: zodError } =
-      validationSchema.safeParse(formData)
-
-    // If error then update text of relevant error element
-    if (zodError instanceof z.ZodError) {
-      // console.log('unflattened error: ', error)
-      const { fieldErrors } = z.flattenError(zodError)
-      // console.log('Flattened error: ', fieldErrors)
-
-      // Handle validation error from action/server
-      for (const [field, messages] of Object.entries(fieldErrors)) {
-        console.log('field, messages: ', field, messages)
-        const errorElemToUpdate = formFieldMap.get(field)
-        // console.log('Error field that will update: ', errorElemToUpdate)
-
-        // early exit
-        if (!errorElemToUpdate) return
-
-        errorElemToUpdate.errorElem.textContent = messages[0]
-        errorElemToUpdate.errorElem.classList.add('visible')
-      }
-
-      return
-    }
-
-    // if success then submit with AJAX to Netlify
-    if (zodSuccess) {
-      // Fetch to home route per Netlify
-      const formAsUrl = new URLSearchParams(rawForm).toString()
-      console.log(formAsUrl)
-
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(rawForm).toString(),
+      // Make sure error text is in original state before any changes
+      formFieldMap.forEach(({ errorElem }) => {
+        errorElem.textContent = errorElem.dataset.defaultErrorMessage || ''
+        errorElem.classList.remove('visible')
       })
-        .then((res) => {
-          const submitButton = form.querySelector(
-            '[type=submit]',
-          ) as HTMLButtonElement
-          const submitButtonText = form.querySelector(
-            '[type="submit"] span',
-          ) as HTMLSpanElement
-          const submitButtonIcon = form.querySelector(
-            '[type="submit"] svg',
-          ) as HTMLElement
 
+      // Validation success/error state
+      const validationResult = z4.safeParse(validationSchema, formData)
+
+      // If zod error then update text of relevant UI
+      if (!validationResult.success) {
+        const { fieldErrors } = z.flattenError(validationResult.error)
+
+        // Handle validation error from action/server
+        for (const [field, messages] of Object.entries(fieldErrors)) {
+          const errorElemToUpdate = formFieldMap.get(field)
+
+          if (!errorElemToUpdate) continue
+
+          errorElemToUpdate.errorElem.textContent = messages?.[0] || ''
+          errorElemToUpdate.errorElem.classList.add('visible')
+        }
+      } else {
+        // Fetch to home route per Netlify forms documentation
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString(),
+        })
+
+        if (response.ok) {
           submitButtonText.innerHTML = 'Submitted'
           submitButton.toggleAttribute('disabled')
           submitButtonIcon.classList.add('visible')
-        })
-        .catch((error) => {
-          console.log('Error with form submission: ', error)
-        })
+        } else if (!response.ok) {
+          // To do: expand error styling/logic
+          submitButtonText.innerHTML = 'Error!'
+          submitButton.toggleAttribute('disabled')
+        }
+      }
+    } catch (error) {
+      console.error('Error with form submission: ', error)
     }
   })
 }
 
-document
-  .querySelectorAll<HTMLFormElement>('form')
-  .forEach((form) => initFormHandler(form, signUpFormSchema))
+document.querySelectorAll<HTMLFormElement>('[data-schema]').forEach((form) => {
+  const schemaKey = form?.dataset?.schema
+
+  if (!schemaKey || !(schemaKey in schemaMap)) {
+    throw new Error('Missing or invalid schema')
+  }
+
+  initFormHandler(form, schemaMap[schemaKey])
+})
