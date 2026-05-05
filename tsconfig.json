@@ -3,6 +3,7 @@
   "include": [".astro/types.d.ts", "**/*", "eslint.config.js"],
   "exclude": ["dist"],
   "compilerOptions": {
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "sourceMap": true
   }
 }

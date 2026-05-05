@@ -2,10 +2,35 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
       "name": "Development server",
+      "type": "node-terminal",
       "request": "launch",
-      "type": "node-terminal"
+      "command": "./node_modules/.bin/astro dev"
+    },
+    {
+      "name": "Astro Client Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:8888",
+      "reAttach": true,
+      "pathMappings": [
+        {
+          "url": "http://localhost:8888/src",
+          "path": "${workspaceFolder}/src"
+        }
+      ]
+    },
+    {
+      "name": "Netlify Server Debug",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "yarn dev:netlify"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Astro/Netlify Full Stack",
+      "configurations": ["Astro Client Firefox", "Netlify Server Debug"]
     }
   ]
 }
