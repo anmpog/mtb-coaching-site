@@ -87,14 +87,6 @@
     visibility: visible;
   }
 
-  form[id$='-form'] button[type='submit'] svg[class$='-success'] {
-    display: none;
-  }
-
-  form[id$='-form'] button[type='submit'] svg[class$='-success'].visible {
-    display: inline;
-  }
-
   /* FALLBACK: only active if browser does not support :user-invalid */
   @supports not selector(:user-invalid) {
     /* This selector is whack. The thought is:

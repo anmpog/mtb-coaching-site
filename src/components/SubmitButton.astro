@@ -1,0 +1,116 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { HTMLAttributes } from 'astro/types'
+
+// State values: loading, success, error, idle
+
+interface Props extends HTMLAttributes<'button'> {
+  /**
+   * @param variant - A button variant defined in accordance with tailwind conventions. Button variants are defined in main.css
+   *
+   * @defaultValue 'btn-primary'
+   */
+  variant?: 'btn-primary' | 'btn-secondary'
+
+  /** @param defaultText - The text that appears when the submit button is in an idle state.
+   *
+   * @defaultValue Submit
+   */
+  defaultText?: string
+}
+
+const { variant = 'btn-primary', defaultText = 'Submit' } = Astro.props
+---
+
+<button
+  class:list={['flex items-center justify-center gap-2', variant]}
+  data-state='idle'
+  type='submit'
+>
+  <Icon class='btn-icon' name='ion:checkmark-done-circle-outline' size={24} />
+  <span class='spinner'></span>
+  <span class='idle-text'>{defaultText}</span>
+  <span class='submitting-text'>Submitting...</span>
+  <span class='error-text' data-default-error-message='Error Submitting'
+    >Error Submitting</span
+  >
+  <span class='success-text'>Submitted!</span>
+</button>
+<style>
+  /* default state */
+  .submitting-text,
+  .success-text,
+  .error-text,
+  .spinner,
+  .btn-icon {
+    display: none;
+  }
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 0.25rem solid currentColor;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    border-top-color: transparent;
+  }
+
+  /* [data-state='idle'] .idle-text {
+    display: inline-block;
+    color: red;
+  } */
+
+  /* Loading state */
+  [data-state='loading'] .spinner {
+    display: inline-block;
+  }
+
+  [data-state='loading'] .idle-text {
+    display: none;
+  }
+
+  [data-state='loading'] .submitting-text {
+    display: inline-block;
+  }
+
+  /* Error state */
+  [data-state='error'] .idle-text {
+    display: none;
+  }
+
+  [data-state='error'] .error-text {
+    display: inline-block;
+  }
+
+  [data-state='error'] {
+    background-color: theme(colors.red.500);
+    font-style: italic;
+    color: theme(colors.neutral.950);
+  }
+
+  /* Successful submission state */
+  [data-state='success'] {
+    background-color: theme(colors.green.500);
+  }
+
+  [data-state='success'] .idle-text {
+    display: none;
+  }
+
+  [data-state='success'] .btn-icon,
+  [data-state='success'] .success-text {
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation: none;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

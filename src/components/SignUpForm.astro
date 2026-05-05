@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components'
 import Honeypot from './Honeypot.astro'
+import SubmitButton from './SubmitButton.astro'
 ---
 
 <form
@@ -15,6 +15,7 @@ import Honeypot from './Honeypot.astro'
     <label for='newsletter-email'>Enter Your Email</label>
     <input
       aria-describedby='newsletter-email-error'
+      aria-invalid='false'
       autocomplete='email'
       id='newsletter-email'
       maxlength='254'
@@ -23,26 +24,24 @@ import Honeypot from './Honeypot.astro'
       required
       type='email'
     />
-    <p
+    <span
       class='newsletter-email-error'
       data-default-error-message='Enter a correctly formatted email address.'
       id='newsletter-email-error'
+      role='alert'
     >
       Enter a correctly formatted email address.
-    </p>
+    </span>
   </div>
   <Honeypot netlifyHoneypotName='newsletter-confirm' />
-  <button
-    class='btn-secondary flex items-center justify-center gap-2'
-    type='submit'
+  <SubmitButton variant='btn-secondary' />
+  <span
+    aria-atomic='true'
+    aria-live='polite'
+    class='sr-only'
+    data-default-status-text='Form idle'
+    id='form-status'>Form idle</span
   >
-    <Icon
-      class='newsletter-form-success'
-      name='ion:checkmark-done-circle-outline'
-      size={24}
-    />
-    <span>Submit</span>
-  </button>
   <script>
     import '../scripts/form-submit'
   </script>
