@@ -3,38 +3,66 @@ import * as z4 from 'zod/v4/core'
 import contactFormSchema from '../schemas/contactForm'
 import signUpFormSchema from '../schemas/signUpForm'
 
-// Types
+// Map for lookups
 const schemaMap = {
   'contact-form': contactFormSchema,
   'signup-form': signUpFormSchema,
 }
 
+// Types
 type SchemaKey = keyof typeof schemaMap
 type FormField = {
   inputElem: HTMLInputElement | HTMLTextAreaElement
   errorElem: HTMLSpanElement
 }
-
-async function delay<T>(ms: number, fn: any): Promise<T> {
-  return new Promise(() => {
-    setTimeout(() => {
-      fn()
-    }, ms)
-  })
-}
+type SubmitState = 'idle' | 'loading' | 'success' | 'error'
 
 // Utility function for runtime check
 function isSchemaKey(key: string): key is SchemaKey {
   return key in schemaMap
 }
 
-// MAIN FUNCTION
+// MAIN
 export default function initFormHandler<Schema extends z.ZodObject>(
   form: HTMLFormElement,
   validationSchema: Schema,
 ): void {
   // Map structure for efficient lookups
   const formFieldMap = new Map<string, FormField>()
+
+  // Variable for tracking timeout IDs
+  let pendingStateTimeout: ReturnType<typeof setTimeout> | null = null
+
+  function setFormState(state: SubmitState, errorMsg?: string) {
+    submitButton.dataset.state = state
+
+    switch (state) {
+      case 'idle':
+        submitButton.disabled = false
+        form.setAttribute('aria-busy', 'false')
+        submitButtonErrorTextElem.textContent = submitButtonErrorTextElem
+          .dataset.defaultErrorMessage as string
+        formStatus.textContent = formStatus.dataset.defaultStatusText as string
+        break
+      case 'loading':
+        submitButton.disabled = true
+        form.setAttribute('aria-busy', 'true')
+        formStatus.textContent = 'Submitting form'
+        break
+      case 'success':
+        form.setAttribute('aria-busy', 'false')
+        formStatus.textContent = 'Form submitted successfully!'
+        resetForm()
+        scheduledStateChange('idle', 5000)
+        break
+      case 'error':
+        submitButton.disabled = false
+        form.setAttribute('aria-busy', 'false')
+        formStatus.textContent = `Submission error: ${errorMsg}`
+        submitButtonErrorTextElem.textContent = `Submission error: ${errorMsg}`
+        break
+    }
+  }
 
   // Utility Functions
   function setFieldErrorState(
@@ -65,48 +93,24 @@ export default function initFormHandler<Schema extends z.ZodObject>(
     inputElem.setAttribute('aria-invalid', 'false')
   }
 
-  async function setFormErrorState(errorMessage: string): Promise<void> {
-    submitButton.disabled = false
-    submitButton.dataset.state = 'error'
-    submitButton.setAttribute('aria-busy', 'false')
-    submitButton.setAttribute('aria-disabled', 'false')
-    formStatus.textContent = `Submission error: ${errorMessage}`
-    submitButtonErrorTextElem.textContent = `Submission error: ${errorMessage}`
-
-    await delay(5000, () => {
-      setFormDefaultState()
-    })
-  }
-
-  function setFormSubmittingState(): void {
-    submitButton.disabled = true
-    submitButton.dataset.state = 'loading'
-    submitButton.setAttribute('aria-busy', 'true')
-    submitButton.setAttribute('aria-disabled', 'true')
-    formStatus.textContent = 'Submitting form'
-  }
-
-  async function setFormSuccessState(): Promise<void> {
-    submitButton.dataset.state = 'success'
-    submitButton.setAttribute('aria-busy', 'false')
-    submitButton.setAttribute('aria-disabled', 'false')
-    formStatus.textContent = 'Form submitted successfull!'
-
-    await delay(5000, () => {
-      setFormDefaultState()
-      resetForm()
-    })
-  }
-
-  function setFormDefaultState(): void {
-    submitButton.dataset.state = 'idle'
-    submitButtonErrorTextElem.textContent = submitButtonErrorTextElem.dataset
-      .defaultErrorMessage as string
-    formStatus.textContent = formStatus.dataset.defaultStatusText as string
-  }
-
   function resetForm(): void {
     form.reset()
+  }
+
+  function clearPendingStateChange(): void {
+    if (pendingStateTimeout) {
+      clearTimeout(pendingStateTimeout)
+      pendingStateTimeout = null
+    }
+  }
+
+  function scheduledStateChange(state: SubmitState, ms: number): void {
+    clearPendingStateChange()
+
+    pendingStateTimeout = setTimeout(() => {
+      setFormState(state)
+      pendingStateTimeout = null
+    }, ms)
   }
 
   form
@@ -133,9 +137,11 @@ export default function initFormHandler<Schema extends z.ZodObject>(
   // Listener to reset error visibility on input event
   formFieldMap.forEach(({ inputElem, errorElem }) => {
     inputElem.addEventListener('input', () => {
-      // Resetting errors, aria-invalid
       setErrorElemDefaultState(errorElem)
       setInputElemDefaultState(inputElem)
+
+      clearPendingStateChange()
+      setFormState('idle')
     })
   })
 
@@ -159,7 +165,7 @@ export default function initFormHandler<Schema extends z.ZodObject>(
       // If zod error then update text of relevant UI
       if (!validationResult.success) {
         const { fieldErrors } = z.flattenError(validationResult.error)
-        let firstInvalidField = null
+        let firstInvalidField: FormField['inputElem'] | null = null
 
         // Handle validation error from action/server
         for (const [field, messages] of Object.entries(fieldErrors)) {
@@ -179,7 +185,7 @@ export default function initFormHandler<Schema extends z.ZodObject>(
 
         firstInvalidField?.focus()
       } else {
-        setFormSubmittingState()
+        setFormState('loading')
 
         // Fetch to home route per Netlify forms documentation
         const response = await fetch('/', {
@@ -192,17 +198,19 @@ export default function initFormHandler<Schema extends z.ZodObject>(
           throw new Error(`Request failed with code ${response.status}`)
         }
 
-        setFormSuccessState()
+        setFormState('success')
       }
     } catch (error) {
       if (error instanceof Error) {
         // eslint-disable-next-line no-console
         console.error('Error with form submission: ', error.message)
-        setFormErrorState(error.message)
+        setFormState('error', error.message)
+        scheduledStateChange('idle', 5000)
       } else {
         // eslint-disable-next-line no-console
         console.error('Unexpected error with form submission')
-        setFormErrorState('Unexpected error')
+        setFormState('error', 'Unexpected error')
+        scheduledStateChange('idle', 5000)
       }
     }
   })
