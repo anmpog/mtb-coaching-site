@@ -149,11 +149,7 @@ export default function initFormHandler<Schema extends z.ZodObject>(
   form.addEventListener('submit', async (event) => {
     try {
       event.preventDefault()
-      const targetAsForm = event.currentTarget
-      // console.log('Target as form: ', targetAsForm)
-      const formData = new FormData(targetAsForm)
-      const formDataFormatted = new URLSearchParams(formData).toString()
-      // console.log('formDataFormatted: ', formDataFormatted)
+      const formData = new FormData(form)
 
       // Reset errors on submit to make sure no stale errors
       formFieldMap.forEach((formField) => {
@@ -195,7 +191,7 @@ export default function initFormHandler<Schema extends z.ZodObject>(
         const response = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formDataFormatted,
+          body: formData,
         })
 
         if (!response.ok) {
