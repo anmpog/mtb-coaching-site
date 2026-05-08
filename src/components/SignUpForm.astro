@@ -7,35 +7,35 @@ import SubmitButton from './SubmitButton.astro'
   aria-label='Newsletter Sign Up'
   data-netlify='true'
   data-schema='signup-form'
-  id='newsletter-form'
+  id='signup-form'
   method='post'
-  name='newsletter-form'
-  netlify-honeypot='newsletter-confirm'
+  name='signup-form'
+  netlify-honeypot='signup-confirm'
 >
-  <input hidden name='form-name' value='signup-form' />=
+  <input hidden name='form-name' value='signup-form' />
   <div class='form-control'>
-    <label for='newsletter-email'>Enter Your Email</label>
+    <label for='signup-email'>Enter Your Email</label>
     <input
-      aria-describedby='newsletter-email-error'
+      aria-describedby='signup-email-error'
       aria-invalid='false'
       autocomplete='email'
-      id='newsletter-email'
+      id='signup-email'
       maxlength='254'
-      name='newsletter-email'
+      name='signup-email'
       placeholder='e.g. your-address@domain.com'
       required
       type='email'
     />
     <span
-      class='newsletter-email-error'
+      class='signup-email-error'
       data-default-error-message='Enter a correctly formatted email address.'
-      id='newsletter-email-error'
+      id='signup-email-error'
       role='alert'
     >
       Enter a correctly formatted email address.
     </span>
   </div>
-  <Honeypot netlifyHoneypotName='newsletter-confirm' />
+  <Honeypot netlifyHoneypotName='signup-confirm' />
   <SubmitButton variant='btn-secondary' />
   <span
     aria-atomic='true'

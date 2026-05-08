@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-const signUpFormSchema = z.object({
-  'newsletter-email': z.email().trim().max(254),
-  'newsletter-confirm': z.string().max(254).optional(),
+const signupFormSchema = z.object({
+  'signup-email': z.email().trim().max(254),
+  'signup-confirm': z.string().max(254).optional(),
 })
 
-export default signUpFormSchema
+export default signupFormSchema
