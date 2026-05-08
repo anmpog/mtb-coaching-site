@@ -8,12 +8,14 @@ import SubmitButton from './SubmitButton.astro'
   data-netlify='true'
   data-schema='contact-form'
   id='contact-form'
+  method='post'
   name='contact-form'
   netlify-honeypot='contact-confirm'
 >
   <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
     Drop Us A Line
   </h2>
+  <input hidden name='form-name' value='contact-form' />
   <div class='form-control'>
     <label for='name'>Your Name</label>
     <input

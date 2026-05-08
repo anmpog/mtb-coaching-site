@@ -8,9 +8,11 @@ import SubmitButton from './SubmitButton.astro'
   data-netlify='true'
   data-schema='signup-form'
   id='newsletter-form'
+  method='post'
   name='newsletter-form'
   netlify-honeypot='newsletter-confirm'
 >
+  <input hidden name='form-name' value='signup-form' />=
   <div class='form-control'>
     <label for='newsletter-email'>Enter Your Email</label>
     <input
