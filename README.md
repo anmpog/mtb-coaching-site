@@ -24,8 +24,8 @@ This example comes from the `<Navigation>` component:
 
 The media query's defined breakpoint of `768px` comes from the [Tailwind 3 defaults](https://v3.tailwindcss.com/docs/responsive-design). I also copied these breakpoint values in the `main.css` file for easier reference, even though the breakpoints can be taken advantage of by using Tailwind classes like so:
 
-```html
-<div class="sm:px-2 md:px-4 lg:px-6">...</div>
+```jsx
+<div class='sm:px-2 md:px-4 lg:px-6'>...</div>
 ```
 
 ## Layout
@@ -70,9 +70,263 @@ import NavLink from './NavLink.astro'
 
 This reduces (or, ideally, eliminates) the need to update multiple files at once manually. If the data is structured thoughtfully and rendered dynamically, the possibility of making errors is dramatically reduced and our site is more flexible and easier to update.
 
+## Form Architecture
+
+### Design Notes
+
+This system intentionally favors:
+
+- native browser form behavior
+- declarative HTML structure
+- centralized submission logic
+- schema-driven validation
+- minimal framework coupling
+- accessibility-first interactions
+
+The result is a lightweight form architecture with shared validation and submission behavior across all forms.
+
+### Basic Structure
+
+Forms in this project use a shared client-side submission handler built around:
+
+- native HTML forms
+- Netlify Forms
+- Zod validation
+- progressive enhancement
+- accessible error/state handling
+
+All forms opt into the shared behavior using the `data-schema` attribute.
+
+### High-Level Flow
+
+1. A form declares a schema key using the `data-schema` attribute
+2. The global form handler finds all matching forms
+3. The corresponding Zod schema is looked up from the `schemaMap`
+4. On submit:
+   - form values are collected with `FormData`
+   - values are validated with Zod
+   - validation errors are mapped back to UI elements
+   - valid submissions are POSTed to Netlify
+
+5. UI state is updated throughout the lifecycle (idle, loading, success, error)
+
+### Registering A New Form Schema
+
+Create a new schema in `src/schemas` with a sensible name.
+
+```ts
+import { z } from 'zod'
+
+const signupFormSchema = z.object({
+  'signup-email': z.email().trim().max(254),
+  'signup-confirm': z.string().max(254).optional(),
+})
+
+export default signupFormSchema
+```
+
+Then, register a schema in the `form-submit.ts` file:
+
+```ts
+import signUpFormSchema from '../schemas/signUpForm'
+
+const schemaMap = {
+  'signup-form': signUpFormSchema,
+}
+```
+
+In your new form, the `<form>` must include a `data-schema` attribute must exactly match the name of one of the keys on the `schemaMap` object.
+
+```tsx
+<form data-schema='signup-form'>...</form>
+```
+
+### Form Initialization
+
+Forms are automatically initialized on page load:
+
+```ts
+document.querySelectorAll('[data-schema]')
+```
+
+Forms are selected by the presence of hte custom `data-schema` attribute since a schema is required (by convention) in order to validate forms before submission.
+
+### General Form Structure
+
+The forms rely on several structural conventions:
+
+```tsx
+<form
+  data-netlify='true' // <-- required for Netlify to detect form
+  data-schema='contact-form'
+  method='post'
+  name='contact-form'
+>
+  // ...
+</form>
+```
+
+The `data-netlify` field is required in order for Netlify to automatically detect and process form submissions.
+
+The `data-schema` attribute is used to make a validation schema available to a form dynamically.
+
+Attributes like `method` and `name` are required by standard best practices.
+
+Additionally, in order for forms to work properly on Netlify, forms must include a hidden field that indicate the name of the form and a value to be used for Netlify's handling of form submissions from a given form:
+
+```tsx
+<form>
+  // hidden field for Netlify to successfully process submissions
+  <input hidden name='form-name' value='contact-form' />
+</form>
+```
+
+### Form Control Structure
+
+Each required field must:
+
+- be wrapped in `.form-control`
+- contain:
+  - an `input` or `textarea`
+  - a working, correctly structured `<label>`
+  - an associated error element represented by a `<span>` element with an `id` attribute whose value conforms to the convention `associatedFieldName-error`.
+    > _example_: if the field that the error element is associated with has an ID attribute value of `email` then the error element's id attribute value should be `email-error`. This is semantically the same as associating a field with an element using the `aria-describedby` attribute.
+  - an `aria-describedby` attribute whose value associates the input element with its requisite error element
+
+```tsx
+<div class='form-control'>
+  <label for='name'>Your Name</label>
+  <input
+    id='name'
+    name='name'
+    aria-describedby='name-error'
+    aria-invalid='false'
+    required
+    type='text'
+  />
+  <span id='name-error' data-default-error-message='Name must be longer'>
+    Name must be longer
+  </span>
+</div>
+```
+
+### Error Element Structure
+
+The form handler searches for error elements using:
+
+```css
+[id$='-error']
+```
+
+This means all validation error elements must end with `-error`. To associate an error element with an input field with an `id` value of `email`, the error element's `id` attribute would be given the value `email-error`.
+
+The default validation message is read from a custom `data-default-error-message` attribute. For the sake of consistency, make sure any text value in the error element is exactly the same as the value given to the `data-default-error-message` attribute.
+
+```tsx
+<span id='name-error' data-default-error-message='Name must be longer'>
+  Name must be longer
+</span>
+```
+
+This allows the error message to be reset to a safe value without the use of a more robust state-management solution.
+
+### Accessibility Features
+
+1. Inputs are (and must be) associated with their respective validation status text/error element by way of the `aria-describedby` attribute.
+2. Invalid fields receive `aria-invalid="true"`
+3. A form must contain a live region, which announces general form state to users who are reliant on assistive technologies:
+
+   ```tsx
+   <span
+     id='form-status'
+     class='sr-only' // <-- visually hidden
+     aria-live='polite'
+     aria-atomic='true'
+     data-default-status-text='Form idle' // <-- default state `data-*` attr
+   >
+     Form idle
+   </span>
+   ```
+
+### Submission Lifecycle
+
+Pre submit validation:
+
+    1. field errors are displayed
+    2. invalid inputs receive aria-invalid="true"
+    3. the first invalid field receives focus
+    4. no network request is made
+
+If validation is successful:
+
+    1.  Form data is URL encoded
+    2.  A POST request is sent to /
+    3.  Netlify processes the submission
+    4.  The form resets
+    5.  UI state changes to success
+
+### Netlify Requirements
+
+Forms are submitted directly to Netlify. To successfully submit a form to Netlify, the request is formatted as such:
+
+```ts
+const formData = new FormData(form)
+const params = new URLSearchParams() // <-- encode params in URL
+
+for (const [key, value] of formData.entries()) {
+  if (typeof value === 'string') {
+    params.append(key, value)
+  }
+}
+
+fetch('/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: params.toString(),
+})
+```
+
+### Adding a New Form
+
+To add a new form to the site:
+
+1. Create a Zod schema in `src/schemas`
+2. Register it in `schemaMap` in `form-submit.ts`
+3. Add `data-schema` attribute to the form
+4. Follow the required field/error structure
+5. Include a live status region
+6. Import the shared form handler script
+
 ## Honeypot Field(s)
 
-Forms on this site will/should contain a "honeypot" field. This is a field that is designed to trick automated scrapers/bots (which are usually responsible for spam) into filling in the field. The field is not viewable or accessible to human users, so the inclusion of this field's value in the event of a form submission is indicative of a bot submitting the form. This makes it easier to reject/ignore the function on the server. The initial implementation is to make the field look like an "email confirmation" field, because scrapers are potentially sophisticated enough to skip fields that are obviously labelled as honeypot fields. I expect this to change as Netlify (and other hosting providers) have tools for helping mitigate spam.
+Forms on this site will/should contain a "honeypot" field. This is a field that is designed to trick automated scrapers/bots (which are usually responsible for spam) into filling in the field. The field is not viewable or accessible to human users, so the inclusion of this field's value in the event of a form submission is indicative of a bot submitting the form. This makes it easier to reject/ignore spam submissions on the server. The general implementation is to make the field look like an "email confirmation" field, because scrapers are potentially sophisticated enough to skip fields that are obviously labelled as honeypot fields.
+
+In keeping with the other form inputs, the honeypot field is included in the schema that controls form validation. Importantly, the honeypot field will be optional as it pertains to validation and form submission. I decided to treat it as a normal field and let it be validated as such with the thought that submissions that don't satisfy the (admittedly basic) validation logic will be rejected, which might make the honeypot marginally more efficacious:
+
+```ts
+import { z } from 'zod'
+
+const signupFormSchema = z.object({
+  'signup-email': z.email().trim().max(254),
+  'signup-confirm': z.string().max(254).optional(), // <-- honeypot field
+})
+
+export default signupFormSchema
+```
+
+Then, to use the Honeypot field, include it within your `<form>` alongside your other form fields, passing a value that exactly matches the field name you defined on the validation schema to the required `netlifyHoneypotName` attribute:
+
+```tsx
+<form>
+  ...
+  <Honeypot netlifyHoneypotName="signup-confirm" /> // <-- name of honeypot
+  ...
+</form>
+```
+
+The form submission logic in general relies on a selector `.querySelectorAll('.form-control:not([data-optional])')` to _avoid_ selecting the honeypot field and attaching any event listeners to it. If the `<Honeypot>` component is not used, be aware of the fact that the `form-submit.ts` script will avoid attaching listeners to any field that has a custom attribute of `data-optional`.
 
 ## Obfuscating Contact Information
 
