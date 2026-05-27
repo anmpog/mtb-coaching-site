@@ -1,24 +1,42 @@
 ---
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 import heroImage from '../assets/hero-img-lowres.jpg'
 import heroData from '../data/site-data.json'
+import { getImage } from 'astro:assets'
 const { tagline, heroTitle, heroSubtext } = heroData
+
+const tinyImg = await getImage({
+  src: heroImage,
+  width: 24,
+  format: 'webp',
+  quality: 20,
+})
+
+const res = await fetch(new URL(tinyImg.src, Astro.url))
+const buffer = Buffer.from(await res.arrayBuffer())
+const encodedTinyImg = `data:image/webp;base64,${buffer.toString('base64')}`
 ---
 
 <div
   class='relative grid min-h-[calc(100vh-var(--nav-height-mobile))] content-stretch overflow-x-hidden [grid-template-areas:"stack"] md:min-h-[75vh]'
 >
-  <Image
-    alt='Image of Max coaching several riders'
-    class='block h-full w-full object-cover [grid-area:stack]'
-    layout='full-width'
-    src={heroImage}
-  />
   <div
     class='h-full w-full border-2 border-active-link bg-slate-950/55 [grid-area:stack]'
+    style={`background-image: url(${encodedTinyImg}); background-size: cover`}
   >
   </div>
-
+  <Picture
+    alt='Image of Max coaching several riders'
+    class='h-full w-full object-cover'
+    fetchpriority='high'
+    formats={['avif', 'webp']}
+    pictureAttributes={{
+      class: '[grid-area:stack]',
+    }}
+    sizes={'100vw'}
+    src={heroImage}
+    widths={[640, 750, 828, 1080, 1200, 1600]}
+  />
   <div
     class='mt-[calc(50%-var(--nav-height-mobile))] flex flex-col flex-wrap items-center justify-center gap-4 self-start justify-self-center px-6 py-14 [grid-area:stack] md:mt-[6em] md:max-w-[85ch] md:gap-6 md:px-8 md:py-4'
   >
