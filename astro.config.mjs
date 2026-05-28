@@ -7,6 +7,8 @@ import { defineConfig } from 'astro/config'
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), icon()],
-  adapter: netlify(),
+  adapter: netlify({
+    imageCDN: false
+  }),
   output: 'static',
 })
