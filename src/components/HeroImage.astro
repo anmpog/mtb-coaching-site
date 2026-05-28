@@ -1,8 +1,7 @@
 ---
-import { Picture } from 'astro:assets'
-import heroImage from '../assets/hero-img-lowres.jpg'
-import heroData from '../data/site-data.json'
-import { getImage } from 'astro:assets'
+import heroImage from '@assets/hero-img-lowres.jpg'
+import heroData from '@data/site-data.json'
+import { getImage, Picture } from 'astro:assets'
 const { tagline, heroTitle, heroSubtext } = heroData
 
 const tinyImg = await getImage({

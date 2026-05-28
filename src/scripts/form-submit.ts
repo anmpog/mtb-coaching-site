@@ -1,7 +1,7 @@
+import contactFormSchema from '@schemas/contactForm'
+import signUpFormSchema from '@schemas/signUpForm'
 import { z } from 'zod'
 import * as z4 from 'zod/v4/core'
-import contactFormSchema from '../schemas/contactForm'
-import signUpFormSchema from '../schemas/signUpForm'
 
 // Map for lookups
 const schemaMap = {

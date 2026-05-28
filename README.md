@@ -50,11 +50,11 @@ The corresponding component that renders the data in this file should be constru
 ```javascript
 ---
 // import the data
-import siteData from '../data/site-data.json'
+import siteData from '@data/site-data.json'
 // destructure the nav links from the rest of the site data
 const { navLinks } = siteData
 // purpose built component for rendering an <a> element consistently
-import NavLink from './NavLink.astro'
+import NavLink from '@components/NavLink.astro'
 ---
 
 <nav id='main-nav' class='main-nav'>
@@ -128,7 +128,7 @@ export default signupFormSchema
 Then, register a schema in the `form-submit.ts` file:
 
 ```ts
-import signUpFormSchema from '../schemas/signUpForm'
+import signUpFormSchema from '@schemas/signUpForm'
 
 const schemaMap = {
   'signup-form': signUpFormSchema,

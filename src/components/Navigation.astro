@@ -1,13 +1,12 @@
 ---
+import logo from '@assets/max-mtb-logo-lowres.png'
+import siteData from '@data/site-data.json'
 import { Icon } from 'astro-icon/components'
-import siteData from '../data/site-data.json'
-const { navLinks, logoType } = siteData
 import { Image } from 'astro:assets'
-import logo from '../assets/max-mtb-logo-lowres.png'
 import NavLink from './NavLink.astro'
+const { navLinks, logoType } = siteData
 
 const requestPath = new URL(Astro.request.url).pathname
-
 // Normalizing path because production env adds trailing slash
 const currentPath = requestPath.split('/')[1]
 ---
@@ -36,7 +35,7 @@ const currentPath = requestPath.split('/')[1]
   </div>
 
   <script>
-    import '../scripts/nav-menu.ts'
+    import '@scripts/nav-menu.ts'
   </script>
 </nav>
 <style>
