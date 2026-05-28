@@ -1,7 +1,7 @@
 ---
-import sideBySideImg1 from '@assets/home-side-by-side-1.jpg'
-import sideBySideImg2 from '@assets/home-side-by-side-2.jpg'
-import HeroImage from '@components/HeroImage.astro'
+import sideBySideImg1 from './assets/home-side-by-side-1.jpg'
+import sideBySideImg2 from './assets/home-side-by-side-2.jpg'
+import Hero from '@components/Hero.astro'
 import SideBySide from '@components/SideBySide.astro'
 import SideBySideContent from '@components/SideBySideContent.astro'
 import SideBySideImage from '@components/SideBySideImage.astro'
@@ -10,7 +10,7 @@ import Layout from '@layouts/Layout.astro'
 ---
 
 <Layout pageTitle='Home'>
-  <HeroImage />
+  <Hero />
   <SideBySide contentDirection='content-image'>
     <SideBySideImage
       altText='An picture of Max and a client examining trail conditions'
