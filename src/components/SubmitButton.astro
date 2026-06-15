@@ -5,16 +5,13 @@ import type { HTMLAttributes } from 'astro/types'
 // State values: loading, success, error, idle
 
 interface Props extends HTMLAttributes<'button'> {
-  /**
-   * @param variant - A button variant defined in accordance with tailwind conventions. Button variants are defined in main.css
-   *
+  /** A button variant defined in accordance with tailwind conventions. Button variants are defined in main.css. /*
    * @defaultValue 'btn-primary'
    */
   variant?: 'btn-primary' | 'btn-secondary'
 
-  /** @param defaultText - The text that appears when the submit button is in an idle state.
-   *
-   * @defaultValue Submit
+  /** The text that appears when the submit button is in an idle state. /*
+   * @defaultValue 'Submit'
    */
   defaultText?: string
 }
@@ -54,11 +51,6 @@ const { variant = 'btn-primary', defaultText = 'Submit' } = Astro.props
     animation: spin 0.7s linear infinite;
     border-top-color: transparent;
   }
-
-  /* [data-state='idle'] .idle-text {
-    display: inline-block;
-    color: red;
-  } */
 
   /* Loading state */
   [data-state='loading'] .spinner {
