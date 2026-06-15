@@ -1,21 +1,40 @@
 ---
-import BioPic from './assets/about-bio-img.jpg'
+import BioPic from '@assets/about/about-bio-img.jpg'
 import SocialLinks from '@components/SocialLinks.astro'
 import siteData from '@data/site-data.json'
 import Layout from '@layouts/Layout.astro'
-import { Image } from 'astro:assets'
+import getLqip from '@utils/getLqip'
+import { Picture } from 'astro:assets'
+
 const { aboutPage } = siteData
+const lqip = getLqip(BioPic)
 ---
 
 <Layout pageTitle='About'>
   <h1>About</h1>
   <div class='bg-slate-400'>
-    <div class='mx-auto flex max-w-4xl flex-col p-4 md:max-w-[65ch]'>
-      <Image
-        alt='A picture of Max Mitchell standing over a bike pulling on his riding gear'
-        class='aspect-square max-h-96 w-auto max-w-96 rounded-full border-4 shadow-md md:mx-auto'
-        src={BioPic}
-      />
+    <div class='mx-auto max-w-4xl flex-col p-4 md:max-w-[65ch]'>
+      <div
+        class='relative mx-auto aspect-square max-w-96 overflow-hidden rounded-full shadow-2xl'
+        id='image-container'
+      >
+        <img
+          alt='Blurred placeholder image'
+          aria-hidden='true'
+          class='absolute inset-0 h-full w-full scale-110 object-cover blur-xl'
+          src={lqip}
+        />
+        <Picture
+          alt='A picture of Max Mitchell standing over a bike pulling on his riding gear'
+          class='absolute inset-0 aspect-square rounded-full border-4 border-footer-bg-color object-cover text-transparent'
+          fallbackFormat='jpg'
+          formats={['avif', 'webp', 'jpg']}
+          height={BioPic.height}
+          sizes={'384px'}
+          src={BioPic}
+          width={BioPic.width}
+        />
+      </div>
       <div
         class='mt-5 flex flex-col md:flex-row md:items-center md:justify-between'
       >
