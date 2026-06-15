@@ -1,57 +1,70 @@
 ---
-import heroImage from '@assets/hero-img-lowres.jpg'
+export interface Props {
+  /** The image source for the hero image */
+  imageSrc: ImageMetadata
+}
+
+import type { ImageMetadata } from 'astro'
 import heroData from '@data/site-data.json'
-import { getImage, Picture } from 'astro:assets'
+import getLqip from '@utils/getLqip.ts'
+import { Picture } from 'astro:assets'
 const { tagline, heroTitle, heroSubtext } = heroData
-
-const tinyImg = await getImage({
-  src: heroImage,
-  width: 24,
-  format: 'webp',
-  quality: 20,
-})
-
-const res = await fetch(new URL(tinyImg.src, Astro.url))
-const buffer = Buffer.from(await res.arrayBuffer())
-const encodedTinyImg = `data:image/webp;base64,${buffer.toString('base64')}`
+const { imageSrc } = Astro.props
+const lqip = getLqip(imageSrc)
 ---
 
 <div
   class='relative grid min-h-[calc(100vh-var(--nav-height-mobile))] content-stretch overflow-x-hidden [grid-template-areas:"stack"] md:min-h-[75vh]'
 >
-  <div
-    class='h-full w-full border-2 border-active-link bg-slate-950/55 [grid-area:stack]'
-    style={`background-image: url(${encodedTinyImg}); background-size: cover`}
-  >
+  <div class='relative flex overflow-hidden [grid-area:stack]'>
+    <img
+      alt='Blurred placeholder image'
+      aria-hidden='true'
+      class='z-0 h-full w-full scale-110 object-cover blur-xl'
+      src={lqip}
+    />
+    <span class='absolute inset-0'></span>
   </div>
   <Picture
     alt='Image of Max coaching several riders'
-    class='h-full w-full object-cover'
+    class='h-full w-full object-cover text-transparent'
+    fallbackFormat='jpg'
     fetchpriority='high'
-    formats={['avif', 'webp']}
+    formats={['avif', 'webp', 'jpg']}
+    height={imageSrc.height}
     pictureAttributes={{
-      class: '[grid-area:stack]',
+      class: '[grid-area:stack] h-full w-full object-cover z-10',
     }}
     sizes={'100vw'}
-    src={heroImage}
-    widths={[640, 750, 828, 1080, 1200, 1600]}
+    src={imageSrc}
+    width={imageSrc.width}
+    widths={[375, 640, 750, 828, 1080, 1200, 1600]}
   />
   <div
-    class='mt-[calc(50%-var(--nav-height-mobile))] flex flex-col flex-wrap items-center justify-center gap-4 self-start justify-self-center px-6 py-14 [grid-area:stack] md:mt-[6em] md:max-w-[85ch] md:gap-6 md:px-8 md:py-4'
+    class='inset-0 z-20 flex h-full w-full flex-col bg-slate-950/50 [grid-area:stack]'
+    id='hero-text-content'
   >
-    <p
-      class='order-2 text-center text-base uppercase tracking-widest text-slate-50 md:order-none md:text-lg'
+    <div
+      class='mt-[calc(50%-var(--nav-height-mobile))] flex flex-col gap-4 self-center px-6 py-14 md:mt-[6em] md:max-w-[85ch] md:gap-6'
     >
-      {tagline}
-    </p>
-    <h1
-      class='order-1 text-center font-heading text-5xl uppercase tracking-widest text-slate-50 md:order-none md:text-8xl'
-    >
-      {heroTitle}
-    </h1>
-    <p class='hidden text-xl capitalize text-slate-50 md:block md:text-2xl'>
-      {heroSubtext}
-    </p>
-    <button class='btn btn-primary order-3 md:order-none'>Book Now</button>
+      <p
+        class='order-2 text-center text-base uppercase tracking-widest text-slate-50 md:order-none md:text-lg'
+      >
+        {tagline}
+      </p>
+      <h1
+        class='order-1 text-center font-heading text-5xl uppercase tracking-widest text-slate-50 md:order-none md:text-8xl'
+      >
+        {heroTitle}
+      </h1>
+      <p
+        class='hidden text-center text-xl capitalize text-slate-50 md:block md:text-2xl'
+      >
+        {heroSubtext}
+      </p>
+      <button class='btn btn-primary order-3 self-center md:order-none'>
+        Book Now
+      </button>
+    </div>
   </div>
 </div>

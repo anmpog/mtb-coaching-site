@@ -1,26 +1,23 @@
 ---
+import getLqip from '@utils/getLqip'
 import type { ImageMetadata } from 'astro'
-import { Image } from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 export interface Props {
-  /**
-   * Imported image metadata.
-   *
+  /** Imported image metadata. *
    * @example
-   * ```
+   * ```astro
+   * ---
    * import MyImage from '@assets/my-image.jpg'
+   * ---
    * <SideBySideImage imageSrc={MyImage} />
    * ```
    */
   imageSrc: ImageMetadata
 
-  /**
-   * A short but descriptive string that describes the image for users who are
-   * relying on screen readers.
-   *
+  /** A short but descriptive string that describes the image for users who are relying on screen readers. *
    * @example
-   *
-   * ```
+   * ```astro
    * <SideBySideImage altText='An image of a mountain biker smiling' />
    * ```
    */
@@ -28,15 +25,28 @@ export interface Props {
 }
 
 const { imageSrc, altText } = Astro.props
+const lqip = getLqip(imageSrc)
 ---
 
-<div class='relative overflow-hidden md:max-h-[32rem]'>
-  <!-- Ratio box to force aspect ratio -->
-  <div class='pt-[75%]' id='ratio-box'></div>
-  <Image
+<div
+  class='relative aspect-[4/3] h-full w-full overflow-hidden md:max-h-[32rem]'
+>
+  <img
+    alt='Blurred placeholder image'
+    aria-hidden='true'
+    class='absolute inset-0 h-full w-full scale-110 object-cover blur-xl'
+    src={lqip}
+  />
+  <Picture
     alt={altText}
-    class='absolute inset-0 h-full w-full content-center object-cover'
+    class='absolute inset-0 h-full w-full object-cover text-transparent'
+    fallbackFormat='jpg'
+    formats={['avif', 'webp', 'jpg']}
+    height={imageSrc.height}
     layout='full-width'
+    sizes={'(min-width: 768px) 50vw, 100vw'}
     src={imageSrc}
+    width={imageSrc.width}
+    widths={[375, 640, 750, 828, 1080, 1280, 1600]}
   />
 </div>
