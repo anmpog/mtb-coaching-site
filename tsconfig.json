@@ -6,12 +6,13 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@layouts/*": ["./src/layouts/*"],
       "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
+      "@layouts/*": ["./src/layouts/*"],
       "@schemas/*": ["./src/schemas/*"],
-      "@scripts/*": ["./src/scripts/*"]
+      "@scripts/*": ["./src/scripts/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }
