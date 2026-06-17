@@ -30,15 +30,14 @@ const lqip = getLqip(imageSrc)
     class='h-full w-full object-cover text-transparent'
     fallbackFormat='jpg'
     fetchpriority='high'
-    formats={['avif', 'webp', 'jpg']}
-    height={imageSrc.height}
+    formats={['avif', 'webp']}
     pictureAttributes={{
       class: '[grid-area:stack] h-full w-full object-cover z-10',
     }}
-    sizes={'100vw'}
+    priority={true}
+    sizes={'(max-width: 375px) 1080px, 100vw'}
     src={imageSrc}
-    width={imageSrc.width}
-    widths={[375, 640, 750, 828, 1080, 1200, 1600]}
+    widths={[375, 640, 750, 828, 1080, 1200]}
   />
   <div
     class='inset-0 z-20 flex h-full w-full flex-col bg-slate-950/50 [grid-area:stack]'

@@ -28,11 +28,10 @@ const lqip = getLqip(BioPic)
           alt='A picture of Max Mitchell standing over a bike pulling on his riding gear'
           class='absolute inset-0 aspect-square rounded-full border-4 border-footer-bg-color object-cover text-transparent'
           fallbackFormat='jpg'
-          formats={['avif', 'webp', 'jpg']}
-          height={BioPic.height}
-          sizes={'384px'}
+          formats={['avif', 'webp']}
+          layout='constrained'
+          priority={true}
           src={BioPic}
-          width={BioPic.width}
         />
       </div>
       <div
