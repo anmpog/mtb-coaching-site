@@ -3,6 +3,7 @@ import '@assets/main.css'
 import Footer from '@components/Footer.astro'
 import siteData from '@data/site-data.json'
 import Navigation from '@components/Navigation.astro'
+import { Font } from 'astro:assets'
 
 export interface Props {
   /** The string representing the title of the current page used for SEO. */
@@ -24,6 +25,10 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
     <!-- Favicon -->
     <link href='/favicon-32x32.png' rel='icon' sizes='32x32' type='image/png' />
     <link href='/favicon-16x16.png' rel='icon' sizes='16x16' type='image/png' />
+
+    <!-- Fonts -->
+    <Font cssVariable='--font-rubik' />
+    <Font cssVariable='--font-raleway' />
 
     <!-- Apple Touch Icons -->
     <link href='/apple-touch-icon.png' rel='apple-touch-icon' sizes='180x180' />
