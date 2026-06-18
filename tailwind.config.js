@@ -8,7 +8,7 @@ export default {
       },
       colors: {
         'active-link': 'rgb(49, 127, 129)',
-        'footer-bg-color': '#57bbbf',
+        'brand-blue': '#57bbbf',
         'brand-red': '#C8102E',
       },
     },
