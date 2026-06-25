@@ -14,6 +14,85 @@
     /* Component Variables */
     --nav-height-mobile: theme('height.24');
   }
+
+  /* For browsers that support clamp  */
+  /* For browsers that support clamp  */
+  @supports (font-size: clamp(1rem, 1vi, 1rem)) {
+    :root {
+      --fs-sm: clamp(0.89rem, 0.02vi + 0.88rem, 0.9rem);
+      --fs-base: clamp(1rem, 0.22vi + 0.95rem, 1.13rem);
+      --fs-md: clamp(1.13rem, 0.49vi + 1.01rem, 1.41rem);
+      --fs-lg: clamp(1.27rem, 0.86vi + 1.07rem, 1.76rem);
+      --fs-xl: clamp(1.42rem, 1.35vi + 1.12rem, 2.2rem);
+      --fs-xxl: clamp(1.6rem, 1.99vi + 1.15rem, 2.75rem);
+      --fs-xxxl: clamp(1.8rem, 2.84vi + 1.16rem, 3.43rem);
+    }
+  }
+  /* For browsers that don't support clamp */
+  @supports not (font-size: clamp(1rem, 1vi, 1rem)) {
+    :root {
+      --fs-sm: 0.89rem;
+      --fs-base: 1rem;
+      --fs-md: 1.13rem;
+      --fs-lg: 1.27rem;
+      --fs-xl: 1.42rem;
+      --fs-xxl: 1.6rem;
+      --fs-xxxl: 1.8rem;
+    }
+    @media screen and (min-width: 1280px) {
+      :root {
+        --fs-sm: 0.9rem;
+        --fs-base: 1.13rem;
+        --fs-md: 1.41rem;
+        --fs-lg: 1.76rem;
+        --fs-xl: 2.2rem;
+        --fs-xxl: 2.75rem;
+        --fs-xxxl: 3.43rem;
+      }
+    }
+  }
+
+  html {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-heading;
+    line-height: 1.1;
+  }
+
+  h1 {
+    @apply font-black;
+    font-size: var(--fs-xxl);
+  }
+
+  h2 {
+    @apply font-extrabold;
+    font-size: var(--fs-xl);
+  }
+
+  h3 {
+    @apply font-bold;
+    font-size: var(--fs-lg);
+  }
+
+  h4 {
+    @apply font-bold;
+    font-size: var(--fs-md);
+  }
+
+  h5 {
+    @apply font-bold;
+  }
+
+  body {
+    font-size: var(--fs-base);
+  }
 }
 
 /* Components */
@@ -124,7 +203,7 @@
 }
 
 .flow-content * + * {
-  margin-top: 1.5em;
+  margin-top: 1.125em;
 }
 
 @media (min-width: theme('screens.md')) {
