@@ -7,20 +7,20 @@ import { Image } from 'astro:assets'
 const { logoType, siteTitle, contactInfo } = siteData
 ---
 
-<footer class='bg-brand-blue min-h-36 pt-9'>
+<footer class='min-h-36 bg-brand-blue pt-9'>
   <div
     class='mx-auto grid max-w-4xl grid-cols-1 gap-8 p-4 md:grid-cols-2 md:gap-4'
   >
     <div class='flex flex-col gap-8 md:col-span-1'>
       <section id='logo-section'>
         <Image alt='Max MTB Logo' src={logo} />
-        <span class='font-heading text-xl tracking-wider'>{siteTitle}</span>
-        <p>{logoType}</p>
+        <span class='block font-heading text-xl font-extrabold'
+          >{siteTitle}</span
+        >
+        <span class-='block'>{logoType}</span>
       </section>
       <section id='contact-section'>
-        <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
-          Contact
-        </h2>
+        <h2 class='text-left uppercase'>Contact</h2>
         <address>
           <ul aria-label='contact information'>
             {
@@ -46,9 +46,7 @@ const { logoType, siteTitle, contactInfo } = siteData
         </address>
       </section>
       <section id='socials-section'>
-        <h2 class='text-left font-heading text-3xl uppercase tracking-widest'>
-          Follow us
-        </h2>
+        <h2 class='text-left uppercase'>Follow us</h2>
         <SocialLinks />
       </section>
     </div>
@@ -56,10 +54,12 @@ const { logoType, siteTitle, contactInfo } = siteData
       <ContactForm />
     </div>
   </div>
-  <p class='mt-[3em] pb-6 text-center font-bold'>
-    &copy;<span aria-label='copyright year' id='year'></span>&nbsp;Max MTB
-    Coaching
-  </p>
+  <span
+    aria-label='copyright year'
+    class='mt-[3em] block pb-6 text-center font-bold'
+  >
+    &copy;<span id='year'></span>&nbsp;Max MTB Coaching
+  </span>
   <script>
     const yearElement = document.getElementById('year')
     if (yearElement) {
