@@ -8,6 +8,15 @@ export default {
         'brand-blue': '#57bbbf',
         'brand-red': '#C8102E',
       },
+      fontSize: {
+        'fs-sm': 'var(--fs-sm)',
+        'fs-base': 'var(--fs-base)',
+        'fs-md': 'var(--fs-md)',
+        'fs-lg': 'var(--fs-lg)',
+        'fs-xl': 'var(--fs-xl)',
+        'fs-xxl': 'var(--fs-xxl)',
+        'fs-xxxl': 'var(--fs-xxxl)',
+      },
     },
     fontFamily: {
       heading: ['var(--font-raleway)', 'sans-serif'],

@@ -4,15 +4,19 @@
 
 @layer base {
   :root {
-    /* Screen sizes based on tailwind-3 defaults */
-    --screen-sm: 640px;
-    --screen-md: 768px;
-    --screen-lg: 1024px;
-    --screen-xl: 1280px;
-    --screen-2xl: 1536px;
+    /* Screen sizes from tailwind-3 defaults */
+    /*     
+    sm: 640px;
+    md: 768px;
+    lg: 1024px;
+    xl: 1280px;
+    2xl: 1536px; */
 
     /* Component Variables */
     --nav-height-mobile: theme('height.24');
+
+    /* utilities */
+    --flow-content-mt: 1.125em;
   }
 
   /* For browsers that support clamp  */
@@ -63,7 +67,7 @@
   h4,
   h5 {
     @apply font-heading;
-    line-height: 1.1;
+    line-height: 1.125;
   }
 
   h1 {
@@ -203,7 +207,7 @@
 }
 
 .flow-content * + * {
-  margin-top: 1.125em;
+  margin-top: var(--flow-content-mt);
 }
 
 @media (min-width: theme('screens.md')) {
