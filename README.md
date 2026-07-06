@@ -331,3 +331,15 @@ The form submission logic in general relies on a selector `.querySelectorAll('.f
 ## Obfuscating Contact Information
 
 I anticipate that displaying plain contact information on the website probably generates a lot of noise, so I wanted to specifically attempt to cut down on this noise by obfuscating the contact information on the website. In the interest of not over-engineering an approach, I referenced [this article](https://spencermortensen.com/articles/email-obfuscation/) by one Spencer Mortensen, which seems to show a sound, up to date exploration of various obfuscation techniques and their success tested against numerous scrapers/bots.
+
+## Adding Images
+
+I'm trying to work alongside Astro's built-in image processing utilities. In order for images to be processed and optimized, they _must_ appear inside the `src/` folder. For that purpose, the project has a `src/assets/` folder. In this folder, assets are stored (for organizational purposes) in a folder that shares the name of the page that they appear in. This is essential both to allowing Astro to apply its default processing to these images, and for a special script I've created to generate image placeholders that are used to keep the site's initial payload manageable.
+
+If a new page is created, for example, `src/pages/blog`, then corresponding images for the `src/pages/blog` page would live in `src/assets/blog`. It's worth noting that if a blog is created, photos for individual blog pages would likely need to [create a content collection](https://docs.astro.build/en/guides/content-collections/#types-of-collections).
+
+Another important aspect of images in this project is that they must have unique names. It is good practice to make the names descriptive in some way. As of this writing, images have been named with some reference to where they appear in the site. For example, the image-heavy `pages/services` page has images named things like `clinics-jumping-img.jpg` or `clinics-manuals-img.jpg`.
+
+Images must have unique names because of a small pre-build script I've created that parses images from these directories to generate an LQIP (Low Quality Image Placeholder) for each image. This is an important part of keeping the site performant. These LQIP images are low-resolution images that are served with the initial HTML payload to the browser, and serve as a "blurred" version of the higher-resolution images that take longer for the browser to load. This makes the site appear less janky and gives the browser time to request the heavier images after the initial page load without confusing image-swapping behavior being as apparent to the user.
+
+The LQIP images are encoded into a base64 string, which allows them to be delivered to the browser in a lightweight way, and to be painted immediately. The script for this can be found in the project's root directly in the `/scripts` folder. This script is executed by including it in the list of scripts in the `package.json` file. For more information about the pre-build scripts, see the [`package.json` documentation here](https://docs.npmjs.com/cli/v11/using-npm/scripts#pre--post-scripts).
