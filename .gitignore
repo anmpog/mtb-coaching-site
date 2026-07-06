@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # Generated LQIP
 src/generated/
+
+# Ignore test page 
+src/pages/test.astro
