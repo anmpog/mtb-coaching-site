@@ -340,6 +340,28 @@ If a new page is created, for example, `src/pages/blog`, then corresponding imag
 
 Another important aspect of images in this project is that they must have unique names. It is good practice to make the names descriptive in some way. As of this writing, images have been named with some reference to where they appear in the site. For example, the image-heavy `pages/services` page has images named things like `clinics-jumping-img.jpg` or `clinics-manuals-img.jpg`.
 
+### LQIP Image Generation and Use
 Images must have unique names because of a small pre-build script I've created that parses images from these directories to generate an LQIP (Low Quality Image Placeholder) for each image. This is an important part of keeping the site performant. These LQIP images are low-resolution images that are served with the initial HTML payload to the browser, and serve as a "blurred" version of the higher-resolution images that take longer for the browser to load. This makes the site appear less janky and gives the browser time to request the heavier images after the initial page load without confusing image-swapping behavior being as apparent to the user.
 
 The LQIP images are encoded into a base64 string, which allows them to be delivered to the browser in a lightweight way, and to be painted immediately. The script for this can be found in the project's root directly in the `/scripts` folder. This script is executed by including it in the list of scripts in the `package.json` file. For more information about the pre-build scripts, see the [`package.json` documentation here](https://docs.npmjs.com/cli/v11/using-npm/scripts#pre--post-scripts).
+
+In order to use LQIP images in a given page, a utility function called `getLqip` is provided from the `src/utils` directory. This function takes the natively-generated image path created by the Astro image service and looks up the image in question from a manifest file that is created by the pre-build `generate-lqip-image-manifest` script. This file is a simple key-value store that holds the base64 encoded image assets. 
+
+As usual for Astro, images are imported into the file, and then the imported image's `src` is passed to the `getLqip` function:
+
+```tsx
+---
+export interface Props {
+  /** The image source for the image */
+  imageSrc: ImageMetadata
+}
+
+import type { ImageMetadata } from 'astro'
+import getLqip from '@utils/getLqip.ts'
+const { imageSrc } = Astro.props
+const lqip = getLqip(imageSrc)
+---
+...
+  // Browser stuff goes here
+...
+```
