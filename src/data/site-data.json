@@ -38,7 +38,15 @@
   "navLinks": [
     { "title": "Home", "path": "/" },
     { "title": "About", "path": "/about" },
-    { "title": "Services", "path": "/services" },
+    {
+      "title": "Services",
+      "path": "/services",
+      "subPaths": [
+        { "subPath": "/services#private-lessons", "name": "Private lessons" },
+        { "subPath": "/services#online-coaching", "name": "Online coaching" },
+        { "subPath": "/services#skills-clinics", "name": "Skills clinics" }
+      ]
+    },
     { "title": "Contact", "path": "/contact" }
   ]
 }

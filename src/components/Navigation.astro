@@ -25,10 +25,17 @@ const currentPath = requestPath.split('/')[1]
   </button>
 
   <div id='menu-wrapper'>
-    <ul id='menu'>
+    <ul class='relative' id='menu'>
       {
-        navLinks.map(({ title, path }) => (
-          <NavLink currentPath={currentPath} path={path} title={title} />
+        navLinks.map(({ title, path, subPaths }) => (
+          <>
+            <NavLink
+              currentPath={currentPath}
+              path={path}
+              subPaths={subPaths}
+              title={title}
+            />
+          </>
         ))
       }
     </ul>

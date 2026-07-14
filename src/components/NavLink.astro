@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components'
+
 export interface Props {
   /** A string to serve as the human-readable, visually displayed link title. */
   title: string
@@ -8,22 +10,52 @@ export interface Props {
 
   /** A generated string value used for applying `.active` styling to nav links based on user's current location in the site. */
   currentPath: string
+
+  /** An optional array that allows for sub-navigation */
+  subPaths?: { subPath: string; name: string }[]
 }
 
-const { title, path, currentPath } = Astro.props
+const { title, path, currentPath, subPaths } = Astro.props
 ---
 
 <li>
   <a
-    class={currentPath === path.slice(1) ? 'active' : ''}
+    class:list={[currentPath === path.slice(1) ? 'active' : '']}
     data-text={title}
     href={path}
   >
     {title}
   </a>
+  {
+    subPaths ? (
+      <>
+        <button
+          aria-labelledby='subnav-toggle'
+          id='subnav-toggle'
+          name='Service Menu Toggle'
+          popovertarget='service-menu-popover'
+        >
+          <Icon name='ion:caret-up-circle-outline' />
+        </button>
+        <div id='service-menu-popover' popover />
+        <ul id='service-menu'>
+          {subPaths.map(({ subPath, name }) => (
+            <li>
+              <a href={subPath}>{name}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : null
+  }
 </li>
 <style>
-  /* 0.25rem is the tailwind equivalent of 1 unit of spacing */
+  li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   a {
     display: inline-flex;
@@ -32,8 +64,46 @@ const { title, path, currentPath } = Astro.props
     font-size: inherit;
     text-decoration: none;
     font-weight: normal;
-    padding: calc(0.25rem * 4) calc(0.25rem * 6);
+    padding: theme(spacing.4) theme(spacing.6);
     outline: 1px solid black;
+  }
+
+  [popover] {
+    inset: unset;
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+    border: none;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    pointer-events: none;
+    /* Progressive enhancement for browsers that support overlay */
+    overlay: none; /* this alone would do the trick, but its not supported yet in all major browsers*/
+  }
+
+  #service-menu {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: theme(gap.1);
+    padding: theme(spacing.4) theme(spacing.6);
+    outline-width: 2px;
+    outline-color: theme(colors.slate.800);
+    border-radius: theme(borderRadius.DEFAULT);
+    background-color: theme(colors.slate.300);
+    outline-style: solid;
+    white-space: nowrap;
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 100%;
+    margin-top: 2px;
+    text-transform: capitalize;
+  }
+
+  [popover]:popover-open + #service-menu {
+    display: flex;
   }
 
   a::after {
@@ -60,8 +130,20 @@ const { title, path, currentPath } = Astro.props
   /* 768px comes from default "medium screen" value in Tailwind 3 */
   @media (width >= 768px) {
     a {
-      padding: calc(0.25rem * 2);
+      padding: theme(spacing.2);
       outline: none;
     }
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>
