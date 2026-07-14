@@ -20,7 +20,7 @@ const { contentDirection = 'content-image' } = Astro.props
   <div class='min-w-0 flex-1' id='side-by-side-image'>
     <slot name='content' />
   </div>
-  <div class='min-w-0 flex-1' id='side-by-side-content'>
+  <div class='min-w-0 flex-1 overflow-hidden' id='side-by-side-content'>
     <slot name='image' />
   </div>
 </div>

@@ -28,9 +28,7 @@ const { imageSrc, altText } = Astro.props
 const lqip = getLqip(imageSrc)
 ---
 
-<div
-  class='relative aspect-[4/3] h-full w-full overflow-hidden md:max-h-[32rem]'
->
+<div class='relative aspect-[4/3] h-full w-full md:max-h-[32rem]'>
   <img
     alt='Blurred placeholder image'
     aria-hidden='true'
