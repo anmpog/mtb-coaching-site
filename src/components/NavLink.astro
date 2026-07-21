@@ -32,9 +32,14 @@ const { title, path, currentPath, subPaths } = Astro.props
 {
   subPaths ? (
     <>
-      <label for='subnavigation-toggle'>
-        <Icon name='ion:caret-up-circle-outline' />
-        <input class='subnavigation-toggle' type='checkbox' />
+      <label for={`${title}-subnavigation-toggle`}>
+        <Icon name='ion:caret-up-circle-outline' title='Arrow Icon' />
+        <input
+          class='subnavigation-toggle'
+          id={`${title}-subnavigation-toggle`}
+          name={`${title} Subnavigation Button`}
+          type='checkbox'
+        />
         <span class='subnavigation-label' hidden>
           Subnavigation
         </span>
@@ -179,6 +184,10 @@ const { title, path, currentPath, subPaths } = Astro.props
     label:has(input:checked) + ul.subnavigation-menu {
       display: flex;
       flex-direction: column;
+    }
+
+    label:has(input:checked) > svg {
+      transform: rotate(180deg);
     }
   }
 </style>

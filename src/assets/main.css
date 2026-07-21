@@ -117,7 +117,8 @@
   }
 
   .btn-secondary {
-    @apply btn border border-active-link bg-active-link text-slate-50;
+    @apply btn border border-active-link text-slate-50;
+    background-color: color-mix(in srgb, theme(colors.active-link) 90%, black);
   }
 
   .btn-secondary:hover {

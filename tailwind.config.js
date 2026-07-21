@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'active-link': 'rgb(49, 127, 129)',
+        'active-link': '#317f81',
         'brand-blue': '#57bbbf',
         'brand-red': '#C8102E',
       },
