@@ -12,9 +12,6 @@
     xl: 1280px;
     2xl: 1536px; */
 
-    /* Component Variables */
-    --nav-height-mobile: theme('height.24');
-
     /* utilities */
     --flow-content-mt: 1.125em;
   }

@@ -18,132 +18,149 @@ export interface Props {
 const { title, path, currentPath, subPaths } = Astro.props
 ---
 
-<li>
-  <a
-    class:list={[currentPath === path.slice(1) ? 'active' : '']}
-    data-text={title}
-    href={path}
-  >
-    {title}
-  </a>
-  {
-    subPaths ? (
-      <>
-        <button
-          aria-labelledby='subnav-toggle'
-          id='subnav-toggle'
-          name='Service Menu Toggle'
-          popovertarget='service-menu-popover'
-        >
-          <Icon name='ion:caret-up-circle-outline' />
-        </button>
-        <div id='service-menu-popover' popover />
-        <ul id='service-menu'>
-          {subPaths.map(({ subPath, name }) => (
-            <li>
-              <a href={subPath}>{name}</a>
-            </li>
-          ))}
-        </ul>
-      </>
-    ) : null
-  }
-</li>
+<a
+  class:list={[
+    currentPath === path.slice(1) ? 'active' : '',
+    subPaths ? 'subpaths' : null,
+  ]}
+  data-text={title}
+  href={path}
+  id='navigation-link'
+>
+  {title}
+</a>
+{
+  subPaths ? (
+    <>
+      <label for='subnavigation-toggle'>
+        <Icon name='ion:caret-up-circle-outline' />
+        <input id='subnavigation-toggle' type='checkbox' />
+        <span hidden id='subnavigation-label'>
+          Subnavigation
+        </span>
+      </label>
+      <ul id='subnavigation-menu'>
+        {subPaths.map(({ subPath, name }) => (
+          <li>
+            <a class='subnavigation-link' href={subPath}>
+              {name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null
+}
 <style>
-  li {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  a {
-    display: inline-flex;
-    align-items: center;
-    flex-direction: column;
-    font-size: inherit;
+  #navigation-link {
     text-decoration: none;
-    font-weight: normal;
-    padding: theme(spacing.4) theme(spacing.6);
-    outline: 1px solid black;
-  }
-
-  [popover] {
-    inset: unset;
-    width: auto;
-    height: auto;
-    padding: 0;
-    background: transparent;
-    border: none;
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    pointer-events: none;
-    /* Progressive enhancement for browsers that support overlay */
-    overlay: none; /* this alone would do the trick, but its not supported yet in all major browsers*/
-  }
-
-  #service-menu {
-    display: none;
+    display: inline-flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: theme(gap.1);
-    padding: theme(spacing.4) theme(spacing.6);
-    outline-width: 2px;
-    outline-color: theme(colors.slate.800);
-    border-radius: theme(borderRadius.DEFAULT);
-    background-color: theme(colors.slate.300);
-    outline-style: solid;
-    white-space: nowrap;
-    position: absolute;
-    inset-inline-start: 0;
-    inset-block-start: 100%;
-    margin-top: 2px;
-    text-transform: capitalize;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: normal;
+    font-size: theme(fontSize.fs-lg);
+    padding: theme(space.2) theme(space.4);
   }
 
-  [popover]:popover-open + #service-menu {
-    display: flex;
-  }
-
-  a::after {
-    content: attr(data-text);
-    height: 0;
-    visibility: hidden;
-    overflow: hidden;
-    user-select: none;
-    pointer-events: none;
-    font-weight: bold;
-  }
-
-  a.active {
-    font-weight: bold;
+  #navigation-link.active {
+    font-weight: 750;
     color: theme('colors.active-link');
     outline-color: theme('colors.active-link');
-    outline-width: 2px;
   }
 
-  a:focus {
+  #navigation-link::after {
+    content: attr(data-text);
+    height: 0;
+    font-weight: 750;
+    overflow: visible;
+    user-select: none;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  #navigation-link:hover,
+  .subnavigation-link:hover {
+    font-weight: 750;
+  }
+
+  #subnavigation-menu {
+    margin-left: theme(space.5);
+    display: flex;
+    flex-direction: column;
+    gap: theme(space.1);
+  }
+
+  #subnavigation-menu li {
+    padding: theme(spacing.2) theme(spacing.4);
+  }
+
+  #subnavigation-menu a {
+    font-size: inherit;
+    display: inline-block;
+  }
+
+  #subnavigation-menu a::before {
+    content: '#';
+    margin-right: theme(space.1);
+    font-weight: bold;
+  }
+
+  #navigation-link:focus {
     outline: auto;
   }
 
-  /* 768px comes from default "medium screen" value in Tailwind 3 */
-  @media (width >= 768px) {
-    a {
-      padding: theme(spacing.2);
-      outline: none;
-    }
+  label,
+  menu {
+    display: none;
   }
 
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  @media (width >= theme(screens.md)) {
+    #navigation-link {
+      font-size: inherit;
+    }
+
+    #navigation-link.subpaths {
+      padding-right: theme(space.1);
+    }
+
+    label {
+      display: unset;
+      position: relative;
+      cursor: crosshair;
+    }
+
+    input {
+      display: unset;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    #subnavigation-menu {
+      margin: theme(space.3) 0 0 0;
+      position: absolute;
+      display: none;
+      gap: theme(gap.1);
+      padding: theme(spacing.4);
+      outline-width: 2px;
+      outline-color: theme(colors.slate.800);
+      border-radius: theme(borderRadius.DEFAULT);
+      background-color: theme(colors.slate.200);
+      outline-style: solid;
+      white-space: nowrap;
+      inset-inline-start: 0;
+      inset-block-start: 100%;
+      text-transform: capitalize;
+    }
+
+    label:has(input:focus) {
+      outline: auto;
+    }
+
+    label:has(input:checked) + ul#subnavigation-menu {
+      display: flex;
+      flex-direction: column;
+    }
   }
 </style>
