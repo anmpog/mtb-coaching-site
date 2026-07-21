@@ -42,7 +42,7 @@ const { title, path, currentPath, subPaths } = Astro.props
       <ul class='subnavigation-menu'>
         {subPaths.map(({ subPath, name }) => (
           <li>
-            <a class='subnavigation-link' href={subPath}>
+            <a class='subnavigation-link' data-text={name} href={subPath}>
               {name}
             </a>
           </li>
@@ -63,6 +63,13 @@ const { title, path, currentPath, subPaths } = Astro.props
     padding: theme(space.2) theme(space.4);
   }
 
+  .subnavigation-link {
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+    font-weight: normal;
+  }
+
   .navigation-link.active {
     font-weight: 750;
     color: theme('colors.active-link');
@@ -70,6 +77,16 @@ const { title, path, currentPath, subPaths } = Astro.props
   }
 
   .navigation-link::after {
+    content: attr(data-text);
+    height: 0;
+    font-weight: 750;
+    overflow: visible;
+    user-select: none;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .subnavigation-link::after {
     content: attr(data-text);
     height: 0;
     font-weight: 750;
@@ -95,15 +112,16 @@ const { title, path, currentPath, subPaths } = Astro.props
     padding: theme(spacing.2) theme(spacing.4);
   }
 
-  .subnavigation-menu a {
+  .subnavigation-link {
     font-size: inherit;
-    display: inline-block;
+    display: inline-flex;
   }
 
-  .subnavigation-menu a::before {
+  .subnavigation-menu li::before {
     content: '#';
     margin-right: theme(space.1);
     font-weight: bold;
+    font-style: italic;
   }
 
   .navigation-link:focus {
