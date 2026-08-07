@@ -1,34 +1,31 @@
 const navMenuButton = document.getElementById(
-  'menu-button',
+  'nav-menu-button',
 ) as HTMLButtonElement
-const navMenuBackdrop = document.getElementById(
-  'menu-backdrop',
-) as HTMLDivElement
+
 const navMenuWrapper = document.getElementById('menu-wrapper') as HTMLDivElement
 const mainContent = document.getElementById('main-content') as HTMLElement
 const footer = document.getElementById('footer') as HTMLElement
 
+// Adding a class to the body so that it's easier to write CSS based on
+// presence of JavaScript
+
+document.body.classList.add('js-enabled')
+
 function openMenu() {
   navMenuButton.setAttribute('aria-expanded', 'true')
-  navMenuWrapper.classList.add('expanded')
-  navMenuBackdrop.classList.add('blur')
   document.body.classList.add('block-scroll')
   mainContent.inert = true
   footer.inert = true
 
-  window.addEventListener('keydown', detectEscKeyPress)
   window.addEventListener('click', detectClickOutsideMenu)
 }
 
 function closeMenu() {
   navMenuButton.setAttribute('aria-expanded', 'false')
-  navMenuWrapper.classList.remove('expanded')
-  navMenuBackdrop.classList.remove('blur')
   document.body.classList.remove('block-scroll')
   mainContent.inert = false
   footer.inert = false
 
-  window.removeEventListener('keydown', detectEscKeyPress)
   window.removeEventListener('click', detectClickOutsideMenu)
 }
 

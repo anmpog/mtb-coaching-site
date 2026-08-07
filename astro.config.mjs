@@ -6,6 +6,9 @@ import { defineConfig, fontProviders } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
+  devToolbar: {
+    enabled: false,
+  },
   integrations: [tailwind(), icon()],
   adapter: netlify({
     imageCDN: false,

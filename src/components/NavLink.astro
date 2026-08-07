@@ -57,22 +57,21 @@ const { title, path, currentPath, subPaths } = Astro.props
   ) : null
 }
 <style>
-  .navigation-link {
+  .navigation-link,
+  .subnavigation-link {
     text-decoration: none;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    display: inline-grid;
     font-weight: normal;
+  }
+
+  .navigation-link {
     font-size: theme(fontSize.fs-lg);
     padding: theme(space.2) theme(space.4);
   }
 
   .subnavigation-link {
-    text-decoration: none;
-    flex-direction: column;
-    align-items: center;
-    font-weight: normal;
+    font-size: inherit;
+    padding: theme(space.1) theme(space.3) theme(space.1) 0;
   }
 
   .navigation-link.active {
@@ -81,21 +80,12 @@ const { title, path, currentPath, subPaths } = Astro.props
     outline-color: theme('colors.active-link');
   }
 
-  .navigation-link::after {
-    content: attr(data-text);
-    height: 0;
-    font-weight: 750;
-    overflow: visible;
-    user-select: none;
-    pointer-events: none;
-    visibility: hidden;
-  }
-
+  .navigation-link::after,
   .subnavigation-link::after {
     content: attr(data-text);
     height: 0;
     font-weight: 750;
-    overflow: visible;
+    grid-area: 1/1;
     user-select: none;
     pointer-events: none;
     visibility: hidden;
@@ -107,19 +97,15 @@ const { title, path, currentPath, subPaths } = Astro.props
   }
 
   .subnavigation-menu {
-    margin-left: theme(space.5);
+    margin-left: theme(space.4);
     display: flex;
     flex-direction: column;
     gap: theme(space.1);
+    margin-top: theme(space.1);
   }
 
   .subnavigation-menu li {
-    padding: theme(spacing.2) theme(spacing.4);
-  }
-
-  .subnavigation-link {
-    font-size: inherit;
-    display: inline-flex;
+    list-style: none;
   }
 
   .subnavigation-menu li::before {
@@ -133,8 +119,7 @@ const { title, path, currentPath, subPaths } = Astro.props
     outline: auto;
   }
 
-  label,
-  menu {
+  label {
     display: none;
   }
 
@@ -143,21 +128,27 @@ const { title, path, currentPath, subPaths } = Astro.props
       font-size: inherit;
     }
 
-    .navigation-link.subpaths {
-      padding-right: theme(space.1);
+    .subpaths.navigation-link {
+      padding: theme(space.2) 0 theme(space.2) theme(space.4);
     }
 
     label {
-      display: unset;
+      display: flex;
       position: relative;
-      cursor: crosshair;
+      align-items: center;
+      padding: theme(space.2) theme(space.4) theme(space.2) 0;
+      cursor: pointer;
+    }
+
+    label svg {
+      pointer-events: none;
     }
 
     input {
-      display: unset;
       position: absolute;
       inset: 0;
       opacity: 0;
+      cursor: pointer;
     }
 
     .subnavigation-menu {
