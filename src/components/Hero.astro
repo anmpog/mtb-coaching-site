@@ -14,13 +14,13 @@ const lqip = getLqip(imageSrc)
 ---
 
 <div
-  class='relative grid min-h-[calc(100vh-var(--nav-height-mobile))] content-stretch overflow-x-hidden [grid-template-areas:"stack"] md:min-h-[75vh]'
+  class='relative grid min-h-[calc(100vh-theme(height.24))] content-stretch overflow-x-hidden [grid-template-areas:"stack"] md:min-h-[75vh]'
 >
   <div class='relative flex overflow-hidden [grid-area:stack]'>
     <img
       alt='Blurred placeholder image'
       aria-hidden='true'
-      class='z-0 h-full w-full scale-110 object-cover blur-xl'
+      class='h-full w-full scale-110 object-cover blur-xl'
       src={lqip}
     />
     <span class='absolute inset-0'></span>
@@ -32,7 +32,7 @@ const lqip = getLqip(imageSrc)
     fetchpriority='high'
     formats={['avif', 'webp']}
     pictureAttributes={{
-      class: '[grid-area:stack] h-full w-full object-cover z-10',
+      class: '[grid-area:stack] h-full w-full object-cover relative',
     }}
     priority={true}
     sizes={'(max-width: 375px) 1080px, 100vw'}
@@ -40,11 +40,11 @@ const lqip = getLqip(imageSrc)
     widths={[375, 640, 750, 828, 1080, 1200]}
   />
   <div
-    class='inset-0 z-20 flex h-full w-full flex-col bg-slate-950/50 [grid-area:stack]'
+    class='relative inset-0 flex h-full w-full flex-col bg-slate-950/50 [grid-area:stack]'
     id='hero-text-content'
   >
     <div
-      class='mt-[calc(50%-var(--nav-height-mobile))] flex flex-col gap-4 self-center px-6 py-14 md:mt-[6em] md:max-w-[85ch] md:gap-6'
+      class='mt-[calc(50%-theme(height.24))] flex flex-col gap-4 self-center px-6 py-14 md:mt-[6em] md:max-w-[85ch] md:gap-6'
     >
       <p
         class='order-2 text-center text-base uppercase tracking-widest text-slate-50 md:order-none md:text-lg'
