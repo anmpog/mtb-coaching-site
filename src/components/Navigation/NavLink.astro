@@ -1,0 +1,77 @@
+---
+import SubnavigationMenu from './SubnavigationMenu.astro'
+import type { NavigationLink } from './navigation.types'
+
+export interface Props extends NavigationLink {
+  /** A generated string value used for applying `.active` styling to nav links based on user's current location in the site. */
+  currentPath: string
+}
+
+const { title, path, currentPath, subNavOptions } = Astro.props
+---
+
+<a
+  class:list={[
+    currentPath === path.slice(1) ? 'active' : '',
+    'navigation-link',
+  ]}
+  data-text={title}
+  href={path}
+>
+  {title}
+</a>
+{
+  subNavOptions ? (
+    <SubnavigationMenu subNavigationOptions={subNavOptions} />
+  ) : null
+}
+<style>
+  /* Layout for no-JS environments */
+  .navigation-link {
+    text-decoration: none;
+    font-weight: normal;
+    display: inline-grid;
+    padding: theme(space.2) theme(space.4);
+    font-size: theme(fontSize.fs-base);
+    width: 100%;
+    text-align: center;
+  }
+
+  /* .navigation-link {
+    font-size: theme(fontSize.fs-lg);
+    padding: theme(space.2) theme(space.4);
+  } */
+
+  .navigation-link.active {
+    font-weight: 750;
+    background-color: theme('colors.active-link');
+    outline: 1px solid;
+    outline-color: theme('colors.brand-blue');
+    color: theme(colors.slate.100);
+  }
+
+  .navigation-link::after {
+    content: attr(data-text);
+    height: 0;
+    font-weight: 750;
+    grid-area: 1/1;
+    user-select: none;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .navigation-link:hover {
+    font-weight: 750;
+  }
+
+  .navigation-link:focus {
+    outline: auto;
+  }
+
+  @media (width >= theme(screens.md)) {
+    body.js-enabled .navigation-link {
+      font-size: inherit;
+      padding: theme(space.2) 0 theme(space.2) theme(space.4);
+    }
+  }
+</style>

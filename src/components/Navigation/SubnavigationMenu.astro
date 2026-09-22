@@ -1,0 +1,142 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { SubNavigationOptions } from './navigation.types'
+
+export interface Props {
+  subNavigationOptions: SubNavigationOptions
+}
+
+const { subNavigationOptions } = Astro.props
+const { subNavigationTitle, subNavigationLinks } = subNavigationOptions
+---
+
+<label for={`${subNavigationTitle}-subnavigation-toggle`}>
+  <Icon name='ion:caret-up-circle-outline' title='Arrow Icon' />
+  <input
+    class='subnavigation-toggle'
+    id={`${subNavigationTitle}-subnavigation-toggle`}
+    name={`${subNavigationTitle} Subnavigation Button`}
+    type='checkbox'
+  />
+  <span class='subnavigation-label' hidden> Subnavigation </span>
+</label>
+<ul class='subnavigation-menu'>
+  {
+    subNavigationLinks.map(({ title, path }) => (
+      <li>
+        <a class='subnavigation-link' data-text={title} href={path}>
+          {title}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+<style>
+  label {
+    display: none;
+  }
+
+  .subnavigation-menu li {
+    list-style: none;
+  }
+
+  .subnavigation-menu li::before {
+    content: '#';
+    margin-right: theme(space.1);
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .subnavigation-link {
+    text-decoration: none;
+    font-weight: normal;
+    display: inline-grid;
+    font-size: inherit;
+    padding: theme(space.1) theme(space.3) theme(space.1) 0;
+  }
+
+  .subnavigation-link::after {
+    content: attr(data-text);
+    height: 0;
+    font-weight: 750;
+    grid-area: 1/1;
+    user-select: none;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .subnavigation-link:hover {
+    font-weight: 750;
+  }
+
+  .subnavigation-menu {
+    display: none;
+  }
+
+  /* body.js-enabled .subnavigation-menu {
+    margin-left: theme(space.8);
+    display: flex;
+    flex-direction: column;
+    gap: theme(space.1);
+    margin-top: theme(space.1);
+  } */
+
+  body.js-enabled .subnavigation-menu {
+    margin-left: theme(space.8);
+    display: flex;
+    flex-direction: column;
+    gap: theme(space.1);
+    margin-top: theme(space.1);
+  }
+
+  @media (width >= theme(screens.md)) {
+    body.js-enabled label {
+      display: flex;
+      position: relative;
+      align-items: center;
+      padding: theme(space.2) theme(space.4) theme(space.2) 0;
+      cursor: pointer;
+    }
+
+    label svg {
+      pointer-events: none;
+    }
+
+    input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .subnavigation-menu {
+      margin: theme(space.3) 0 0 0;
+      position: absolute;
+      display: none;
+      gap: theme(gap.1);
+      padding: theme(spacing.4);
+      outline-width: 2px;
+      outline-color: theme(colors.slate.800);
+      border-radius: theme(borderRadius.DEFAULT);
+      background-color: theme(colors.slate.200);
+      outline-style: solid;
+      white-space: nowrap;
+      inset-inline-start: 0;
+      inset-block-start: 100%;
+      text-transform: capitalize;
+
+      label:has(input:focus) {
+        outline: auto;
+      }
+
+      label:has(input:checked) + ul.subnavigation-menu {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label:has(input:checked) > svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+</style>

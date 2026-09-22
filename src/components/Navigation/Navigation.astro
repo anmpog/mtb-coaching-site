@@ -7,11 +7,12 @@ import NavLink from './NavLink.astro'
 const { navLinks, logoType } = siteData
 
 const requestPath = new URL(Astro.request.url).pathname
+
 // Normalizing path because production env adds trailing slash
 const currentPath = requestPath.split('/')[1]
 ---
 
-<nav id='main-navigation'>
+<div id='main-navigation'>
   <a href='/' id='logo-link'>
     <Image alt='Max MTB Logo' id='logo-img' src={logo} />
   </a>
@@ -22,48 +23,108 @@ const currentPath = requestPath.split('/')[1]
     aria-controls='menu-wrapper'
     aria-describedby='button-label'
     aria-expanded='false'
-    aria-label='Navigation Menu Toggle'
+    aria-label='Mobile Navigation Menu Toggle'
     id='nav-menu-button'
     tabindex='0'
   >
     <Icon focusable='false' name={'ion:menu'} title='site navigation' />
     <span hidden id='button-label'>Site Navigation</span>
   </button>
-  <div id='menu-wrapper'>
+  <nav id='menu-wrapper'>
     <ul aria-label='Navigation Links' id='navigation-menu'>
       {
-        navLinks.map(({ title, path, subPaths }) => (
-          <li data-subpaths={subPaths ? 'true' : 'false'}>
+        navLinks.map(({ title, path, subNavOptions }) => (
+          <li data-subnavigation={subNavOptions ? 'true' : 'false'}>
             <NavLink
               currentPath={currentPath}
               path={path}
-              subPaths={subPaths}
+              subNavOptions={subNavOptions}
               title={title}
             />
           </li>
         ))
       }
     </ul>
-  </div>
+  </nav>
 
   <script>
     import '@scripts/nav-menu.ts'
   </script>
-</nav>
+</div>
 <style>
-  nav {
+  /* Layout for no-JS environments */
+  #main-navigation {
     position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    min-height: theme(height.24);
+    row-gap: theme(space.3);
+    z-index: 1;
+    padding-top: theme(space.3);
+  }
+
+  #main-navigation::before {
+    display: none;
+  }
+
+  #nav-menu-button {
+    display: none;
+  }
+
+  #menu-wrapper {
+    grid-row: 2;
+    grid-column: 1 / 5;
+    top: 100%;
+    flex-direction: row;
+    /* border: 10px solid red; */
+  }
+
+  ul#navigation-menu {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background-color: transparent;
+    outline: 2px solid theme(colors.slate.800);
+  }
+
+  ul#navigation-menu li {
+    min-width: 0;
+  }
+
+  #logo-link {
+    grid-row: 1;
+    grid-column: 1 / 2;
+    height: theme(space.16);
+    width: theme(space.16);
+    align-self: center;
+    justify-self: center;
+  }
+
+  #logo-type {
+    grid-row: 1;
+    grid-column: 2 / 5;
+    flex-shrink: 0;
+    display: block;
+    justify-self: center;
+    align-self: center;
+  }
+
+  #logo-type span {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Layout for JS environments */
+  body.js-enabled nav {
     display: flex;
     justify-content: space-between;
     height: theme(height.24);
     align-items: center;
     gap: theme(space.2);
-    padding: 0 theme(space.3);
-    z-index: 1;
   }
 
   /* Want to appear between navigation menu wrapper and primary page content */
-  nav::before {
+  /* body.js-enabled nav::before {
     content: '';
     z-index: -1;
     position: fixed;
@@ -81,7 +142,7 @@ const currentPath = requestPath.split('/')[1]
   }
 
   body.js-enabled #nav-menu-button {
-    /* display: inline-flex; */
+    display: inline-flex;
     width: theme(spacing.11);
     height: theme(spacing.11);
     justify-content: center;
@@ -89,14 +150,14 @@ const currentPath = requestPath.split('/')[1]
     z-index: 2;
   }
 
-  #nav-menu-button svg {
+  body.js-enabled #nav-menu-button svg {
     inset: 0;
     height: 100%;
     width: 100%;
     pointer-events: none;
   }
 
-  #menu-wrapper {
+  body.js-enabled #menu-wrapper {
     display: grid;
     grid-template-rows: 0fr;
     overflow: hidden;
@@ -107,7 +168,7 @@ const currentPath = requestPath.split('/')[1]
     overflow: visible;
   }
 
-  #nav-menu-button[aria-expanded='true'] ~ #menu-wrapper {
+  body.js-enabled #nav-menu-button[aria-expanded='true'] ~ #menu-wrapper {
     grid-template-rows: 1fr;
     grid-template-columns: repeat(12, 1fr);
     min-height: 75vh;
@@ -116,12 +177,12 @@ const currentPath = requestPath.split('/')[1]
     border-bottom: 2px solid black;
   }
 
-  nav:has(#nav-menu-button[aria-expanded='true'])::before {
+  body.js-enabled nav:has(#nav-menu-button[aria-expanded='true'])::before {
     opacity: 1;
     visibility: visible;
   }
 
-  #navigation-menu {
+  body.js-enabled #navigation-menu {
     grid-column-start: 1;
     grid-column-end: 12;
     min-height: 0;
@@ -130,24 +191,14 @@ const currentPath = requestPath.split('/')[1]
     justify-content: center;
     gap: theme(space.2);
     padding: theme(space.4);
-  }
-
-  #logo-link {
-    height: theme(space.16);
-    width: theme(space.16);
-  }
-
-  #logo-type {
-    display: inline;
-  }
-
-  #logo-type span {
-    font-weight: bold;
-    text-align: center;
-  }
+  } */
 
   @media (width >= theme(screens.sm)) {
-    #navigation-menu {
+    #main-navigation {
+      /* border: 10px solid red; */
+    }
+
+    body.js-enabled #navigation-menu {
       grid-column-start: 4;
       grid-column-end: 10;
       margin: 0 auto;
@@ -155,15 +206,19 @@ const currentPath = requestPath.split('/')[1]
   }
 
   @media (width >= theme(screens.md)) {
-    nav {
+    #main-navigation {
       max-width: theme(maxWidth.6xl);
+      display: flex;
+      align-items: center;
       margin: 0 auto;
       justify-content: space-between;
+      padding: 0 theme(space.3);
+      /* border: 10px solid blue; */
     }
 
     #menu-wrapper {
-      position: relative;
-      display: inline;
+      /* position: relative; */
+      /* display: inline; */
       visibility: visible;
       transition: none;
       width: auto;
@@ -171,21 +226,25 @@ const currentPath = requestPath.split('/')[1]
       background: none;
     }
 
-    #navigation-menu {
+    ul#navigation-menu {
+      display: flex;
       flex-direction: row;
       padding: 0;
-      gap: theme(space.3);
+      outline: none;
     }
 
-    body.js-enabled #nav-menu-button {
+    #nav-menu-button {
       display: none;
     }
+    /* body.js-enabled #nav-menu-button {
+      display: none;
+    } */
 
     #menu-backdrop {
       display: none;
     }
 
-    li[data-subpaths='true'] {
+    li[data-subnavigation='true'] {
       position: relative;
       display: flex;
       align-items: stretch;
