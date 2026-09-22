@@ -20,18 +20,18 @@ const currentPath = requestPath.split('/')[1]
     <span class='font-semibold'>{logoType}</span>
   </div>
   <button
-    aria-controls='menu-wrapper'
+    aria-controls='navigation-menu'
     aria-describedby='button-label'
     aria-expanded='false'
-    aria-label='Mobile Navigation Menu Toggle'
+    aria-label='Navigation Menu Toggle'
     id='nav-menu-button'
     tabindex='0'
   >
     <Icon focusable='false' name={'ion:menu'} title='site navigation' />
     <span hidden id='button-label'>Site Navigation</span>
   </button>
-  <nav id='menu-wrapper'>
-    <ul aria-label='Navigation Links' id='navigation-menu'>
+  <nav id='navigation-menu'>
+    <ul aria-label='Navigation Links' id='navigation-menu-links'>
       {
         navLinks.map(({ title, path, subNavOptions }) => (
           <li data-subnavigation={subNavOptions ? 'true' : 'false'}>
@@ -72,22 +72,21 @@ const currentPath = requestPath.split('/')[1]
     display: none;
   }
 
-  #menu-wrapper {
+  #navigation-menu {
     grid-row: 2;
     grid-column: 1 / 5;
     top: 100%;
-    flex-direction: row;
     /* border: 10px solid red; */
   }
 
-  ul#navigation-menu {
+  ul#navigation-menu-links {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     background-color: transparent;
     outline: 2px solid theme(colors.slate.800);
   }
 
-  ul#navigation-menu li {
+  ul#navigation-menu-links li {
     min-width: 0;
   }
 
@@ -115,13 +114,13 @@ const currentPath = requestPath.split('/')[1]
   }
 
   /* Layout for JS environments */
-  body.js-enabled nav {
+  /* body.js-enabled nav {
     display: flex;
     justify-content: space-between;
     height: theme(height.24);
     align-items: center;
     gap: theme(space.2);
-  }
+  } */
 
   /* Want to appear between navigation menu wrapper and primary page content */
   /* body.js-enabled nav::before {
@@ -197,12 +196,12 @@ const currentPath = requestPath.split('/')[1]
     #main-navigation {
       /* border: 10px solid red; */
     }
-
+/* 
     body.js-enabled #navigation-menu {
       grid-column-start: 4;
       grid-column-end: 10;
       margin: 0 auto;
-    }
+    } */
   }
 
   @media (width >= theme(screens.md)) {

@@ -2,7 +2,12 @@ const navMenuButton = document.getElementById(
   'nav-menu-button',
 ) as HTMLButtonElement
 
-const navMenuWrapper = document.getElementById('menu-wrapper') as HTMLDivElement
+// <ul id="navigation-menu"> = list of links, changed to navigation menu links
+// <nav id="menu-wrapper"> = actual nav element, changed to navigation menu
+
+const navigationMenu = document.getElementById(
+  'navigation-menu',
+) as HTMLDivElement
 const mainContent = document.getElementById('main-content') as HTMLElement
 const footer = document.getElementById('footer') as HTMLElement
 
@@ -31,7 +36,7 @@ function closeMenu() {
 
 function detectClickOutsideMenu(event: MouseEvent) {
   const target = event.target as Node
-  if (!navMenuWrapper.contains(target) && !navMenuButton.contains(target)) {
+  if (!navigationMenu.contains(target) && !navMenuButton.contains(target)) {
     closeMenu()
   }
 }
