@@ -31,10 +31,12 @@ const { title, path, currentPath, subNavOptions } = Astro.props
     text-decoration: none;
     font-weight: normal;
     display: inline-grid;
-    padding: theme(space.2) theme(space.4);
+    padding: theme(space.1) theme(space.3);
+    /* padding: theme(space.2) theme(space.4); */
     font-size: theme(fontSize.fs-base);
     width: 100%;
     text-align: center;
+    color: theme(colors.slate.600);
   }
 
   /* .navigation-link {
@@ -62,6 +64,11 @@ const { title, path, currentPath, subNavOptions } = Astro.props
 
   .navigation-link:hover {
     font-weight: 750;
+    color: theme(colors.slate.700);
+  }
+
+  .navigation-link.active:hover {
+    color: theme(colors.slate.50);
   }
 
   .navigation-link:focus {
