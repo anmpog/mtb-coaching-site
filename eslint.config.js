@@ -14,7 +14,8 @@ export default defineConfig([
   {
     files: ['**/*.{astro,ts,tsx,js,mjs}'],
     rules: {
-      'no-console': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-debugger': 'error',
     },
   },
   {

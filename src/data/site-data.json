@@ -41,7 +41,7 @@
     {
       "title": "Services",
       "path": "/services",
-      "subNavOptions": {
+      "subNavigation": {
         "subNavigationTitle": "Services",
         "subNavigationLinks": [
           { "title": "Private lessons", "path": "/services#private-lessons" },

@@ -7,6 +7,7 @@
     "build:images": "tsx scripts/generate-lqip-image-manifest.ts",
     "dev": "astro dev",
     "dev:netlify": "netlify dev",
+    "install:deps": "SHARP_IGNORE_GLOBAL_LIBVIPS=1 yarn install",
     "prebuild": "yarn build:images",
     "build": "astro build",
     "preview": "astro preview",
