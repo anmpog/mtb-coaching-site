@@ -1,0 +1,54 @@
+---
+import logo from '@assets/max-mtb-logo.png';
+import NavigationLinks from '@components/NavigationLinks.astro';
+import ResponsiveNavigation from '@components/ResponsiveNavigation.astro';
+import { Image } from 'astro:assets';
+---
+
+<div class='navigation-wrapper'>
+  <a
+    aria-label='Max Mountain Bike Coaching Home'
+    class='logo-link'
+    href='/'
+    id='logo-link'
+  >
+    <Image alt='Max MTB Logo' id='logo-img' src={logo} />
+  </a>
+  <nav aria-label={'Site Navigation'} class='navigation'>
+    <ResponsiveNavigation>
+      <NavigationLinks />
+    </ResponsiveNavigation>
+  </nav>
+</div>
+<style>
+  .navigation-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    padding: theme(space.2);
+    z-index: 1;
+  }
+
+  .logo-link {
+    max-height: theme(height.20);
+    min-height: theme(width.16);
+    max-width: theme(width.20);
+    min-width: theme(width.16);
+    z-index: 2;
+  }
+
+  @media (width > theme(screens.sm)) {
+    .navigation-wrapper {
+      max-width: theme(maxWidth.6xl);
+      margin: 0 auto;
+    }
+
+    .logo-link {
+      max-height: theme(height.24);
+      max-width: theme(width.24);
+      margin: 0;
+    }
+  }
+</style>

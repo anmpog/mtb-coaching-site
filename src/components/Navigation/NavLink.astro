@@ -1,13 +1,14 @@
 ---
-import SubnavigationMenu from './SubnavigationMenu.astro'
-import type { NavigationLink } from './navigation.types'
+import type { NavigationLink } from './navigation.types';
 
 export interface Props extends NavigationLink {
   /** A generated string value used for applying `.active` styling to nav links based on user's current location in the site. */
   currentPath: string
 }
 
-const { title, path, currentPath, subNavOptions } = Astro.props
+const { title, path, subNavOptions } = Astro.props
+const requestPath = new URL(Astro.request.url).pathname
+const currentPath = requestPath.split('/')[1]
 ---
 
 <a
@@ -20,36 +21,22 @@ const { title, path, currentPath, subNavOptions } = Astro.props
 >
   {title}
 </a>
-{
+<!-- {
   subNavOptions ? (
     <SubnavigationMenu subNavigationOptions={subNavOptions} />
   ) : null
-}
+} -->
 <style>
   /* Layout for no-JS environments */
   .navigation-link {
     text-decoration: none;
-    font-weight: normal;
+    font-size: theme(fontSize.fs-base);
+    font-weight: theme(fontWeight.normal);
     display: inline-grid;
     padding: theme(space.1) theme(space.3);
-    /* padding: theme(space.2) theme(space.4); */
-    font-size: theme(fontSize.fs-base);
     width: 100%;
     text-align: center;
     color: theme(colors.slate.600);
-  }
-
-  /* .navigation-link {
-    font-size: theme(fontSize.fs-lg);
-    padding: theme(space.2) theme(space.4);
-  } */
-
-  .navigation-link.active {
-    font-weight: 750;
-    background-color: theme('colors.active-link');
-    outline: 1px solid;
-    outline-color: theme('colors.brand-blue');
-    color: theme(colors.slate.100);
   }
 
   .navigation-link::after {
@@ -62,23 +49,22 @@ const { title, path, currentPath, subNavOptions } = Astro.props
     visibility: hidden;
   }
 
-  .navigation-link:hover {
-    font-weight: 750;
+  .navigation-link.active {
+    font-weight: theme(fontWeight.semibold);
+    background-color: theme('colors.active-link');
+    color: theme(colors.slate.100);
+  }
+
+  .navigation-link:hover:not(.active) {
+    font-weight: theme(fontWeight.semibold);
     color: theme(colors.slate.700);
   }
 
-  .navigation-link.active:hover {
-    color: theme(colors.slate.50);
-  }
-
-  .navigation-link:focus {
-    outline: auto;
-  }
-
-  @media (width >= theme(screens.md)) {
-    /* body.js-enabled .navigation-link {
-      font-size: inherit;
-      padding: theme(space.2) 0 theme(space.2) theme(space.4);
-    } */
+  @media (max-width: theme(screens.sm)) {
+    :global(burger-menu.js-enabled) .navigation-link {
+      padding: theme(space.3) theme(space.7);
+      border-radius: theme(borderRadius.DEFAULT);
+      font-size: theme(fontSize.fs-md);
+    }
   }
 </style>

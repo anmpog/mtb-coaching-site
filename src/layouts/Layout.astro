@@ -1,8 +1,8 @@
 ---
 import '@assets/main.css'
 import Footer from '@components/Footer.astro'
+import MainNavigation from '@components/Navigation/MainNavigation.astro'
 import siteData from '@data/site-data.json'
-import Navigation from '@components/Navigation/Navigation.astro'
 import { Font } from 'astro:assets'
 
 export interface Props {
@@ -36,7 +36,7 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
   </head>
   <body class='flex min-h-screen flex-col'>
     <header>
-      <Navigation />
+      <MainNavigation />
     </header>
     <main class='h-full flex-1' id='main-content'>
       <slot />
@@ -45,4 +45,9 @@ const { siteTitle = siteData.siteTitle, pageTitle } = Astro.props
       <Footer />
     </footer>
   </body>
+  <!-- <script>
+    // Adds a class to the body so that layout can be modified for cases where
+    // javascript is unavailable
+    document.body.classList.add('js-enabled')
+  </script> -->
 </html>

@@ -1,0 +1,36 @@
+---
+import NavLink from '@components/Navigation/NavLink.astro';
+import siteData from '@data/site-data.json';
+
+const { navLinks } = siteData
+---
+
+<ul class='navigation-links'>
+  {
+    navLinks.map(({ title, path }) => {
+      return (
+        <li>
+          <NavLink currentPath='/' path={path} title={title} />
+        </li>
+      )
+    })
+  }
+</ul>
+<style>
+  ul {
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: theme(space.4) 0;
+    gap: theme(space.2);
+  }
+
+  @media (max-width: theme(screens.sm)) {
+    :global(burger-menu.js-enabled) .navigation-links {
+      flex-direction: column;
+      width: 100%;
+      gap: theme(space.3);
+      align-self: center;
+      align-items: center;
+    }
+  }
+</style>
