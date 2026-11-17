@@ -1,0 +1,27 @@
+---
+import '@assets/hamburger-menu.css';
+
+export interface Props {
+  /**
+   * A string value that determines at what screen width the responsive
+   * navigation disappears. The string value is parsed to an integer by
+   * the `hamburger-menu.ts` script and checked against the max width
+   * of the <body> element. The value defaults to the Tailwind 3 small screen
+   * breakpoint (640px). This value will function as a max-width media
+   * query.
+   *
+   * @defaultValue '640'
+   */
+
+  breakpoint?: string
+}
+
+const { breakpoint = '640' } = Astro.props
+---
+
+<burger-menu data-breakpoint={breakpoint}>
+  <slot />
+  <script>
+    import '@scripts/hamburger-menu';
+  </script>
+</burger-menu>
