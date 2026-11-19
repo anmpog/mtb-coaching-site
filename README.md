@@ -341,11 +341,12 @@ If a new page is created, for example, `src/pages/blog`, then corresponding imag
 Another important aspect of images in this project is that they must have unique names. It is good practice to make the names descriptive in some way. As of this writing, images have been named with some reference to where they appear in the site. For example, the image-heavy `pages/services` page has images named things like `clinics-jumping-img.jpg` or `clinics-manuals-img.jpg`.
 
 ### LQIP Image Generation and Use
+
 Images must have unique names because of a small pre-build script I've created that parses images from these directories to generate an LQIP (Low Quality Image Placeholder) for each image. This is an important part of keeping the site performant. These LQIP images are low-resolution images that are served with the initial HTML payload to the browser, and serve as a "blurred" version of the higher-resolution images that take longer for the browser to load. This makes the site appear less janky and gives the browser time to request the heavier images after the initial page load without confusing image-swapping behavior being as apparent to the user.
 
 The LQIP images are encoded into a base64 string, which allows them to be delivered to the browser in a lightweight way, and to be painted immediately. The script for this can be found in the project's root directly in the `/scripts` folder. This script is executed by including it in the list of scripts in the `package.json` file. For more information about the pre-build scripts, see the [`package.json` documentation here](https://docs.npmjs.com/cli/v11/using-npm/scripts#pre--post-scripts).
 
-In order to use LQIP images in a given page, a utility function called `getLqip` is provided from the `src/utils` directory. This function takes the natively-generated image path created by the Astro image service and looks up the image in question from a manifest file that is created by the pre-build `generate-lqip-image-manifest` script. This file is a simple key-value store that holds the base64 encoded image assets. 
+In order to use LQIP images in a given page, a utility function called `getLqip` is provided from the `src/utils` directory. This function takes the natively-generated image path created by the Astro image service and looks up the image in question from a manifest file that is created by the pre-build `generate-lqip-image-manifest` script. This file is a simple key-value store that holds the base64 encoded image assets.
 
 As usual for Astro, images are imported into the file, and then the imported image's `src` is passed to the `getLqip` function:
 
@@ -365,3 +366,296 @@ const lqip = getLqip(imageSrc)
   // Browser stuff goes here
 ...
 ```
+
+**Note for local development:** Sharp, which is used by the LQIP-generation script (and other dependencies in the project), relies on the native image-processing library `libvips`.
+
+During installation, Sharp can detect a globally installed version of `libvips` (for example, one installed through Homebrew) and attempt to build against it rather than use its prebuilt binaries. This can cause dependency installation to fail when the local environment doesn't have the necessary build dependencies.
+
+To avoid this behavior, I've included an `install:deps` script in `package.json`. It sets the `SHARP_IGNORE_GLOBAL_LIBVIPS` environment variable during installation, instructing Sharp to ignore any globally installed `libvips` and use its bundled binaries instead.
+
+_(ChatGTP was used extensively to document and trouble-shoot this issue.)_
+
+### Responsive Navigation
+
+So far the biggest hurdle in this project has been implementing a responsive
+navigation component. At this point this represents the bulk of the work I've
+done on this site. I have been learning a lot about progressive enhancement and
+accessibility. My primary concerns were:
+
+- Responsive: works fluidly across various viewport sizes.
+- Accessibile: provides an accessible experience for users who rely on
+  assistive technologies.
+- Maintainable: This is a subjective goal, but I wanted something that was easy
+  to reason about and make changes to.
+
+I found an article [by Andy Bell](https://piccalil.li/blog/build-a-fully-responsive-progressively-enhanced-burger-menu/) that details the
+implementation of a Web Component-based navigation with an emphasis on
+accessibility. Web Components are new to me, but I liked this option because
+it seemed like a tidy way to encapsulate this interactive component's
+functionality.
+
+I borrowed heavily/verbatim from the article I linked to above. The primary
+differences in my implementation involve adapting the Web Component to work
+alongside Astro's conventions.
+
+#### Accessibility
+
+A primary accessibility concern was ensuring that there is a usable menu in the
+event that JavaScript fails to load/execute. (This concern overlaps with the
+progressive enhancement strategy outline below.)
+
+In the event that scripting _is_ enabled, the menu's default state is designed
+to be appropriately hidden from assistive technologies. The menu is both
+visually hidden, and hidden from keyboard navigation until the user interacts
+with it to change its state. The menu can be opened and closed via keyboard
+interactions. Elements contained in the menu have appropriate focus ordering.
+
+The menu is stateful and conveys state through appropriate `aria-` attributes,
+responding to user interaction in various forms. The menu will automatically
+close if a focus moves outside its boundaries. Care is taken to ensure that
+focus styling is applied to elements that receive focus.
+
+```js
+// hamburger-menu.ts
+
+// Note the aria-label and aria-hidden attributes indicating menu state and
+// interactivity
+  render() {
+    this.innerHTML = `
+      <div class="burger-menu" data-element="burger-root">
+        <button class="burger-menu__trigger" data-element="burger-menu-trigger" type="button" aria-label="Open menu">
+          <span class="burger-menu__bar" aria-hidden="true"></span>
+        </button>
+        <div class="burger-menu__panel" data-element="burger-menu-panel">
+          ${this.initialMarkup}
+        </div>
+      </div>
+    `
+
+    this.postRender()
+  }
+// ... rest of component definition ...
+```
+
+#### Progressive Enhancement
+
+I tried to emphasize progressive enhancement, so that there is a
+workable navigation menu in the event a user is blocking scripting in
+their browser, or the custom component fails to initialize for some reason.
+The "default" menu is not necessarily pretty, but it is functional.
+
+The menu is designed around the idea that if the user has scripting disabled,
+the custom element will not be registered and its interactive functionality
+will not be initialized. In this scenario, the burger menu would not function as
+designed, which necessitates a workable fallback. To serve as an indicator for
+a (un)successful initialization, the `hamburger-menu.ts` script adds a class
+attribute to the `<hamburger-menu>` element. Child elements can use this class
+as a selector to apply an "enhanced presentation".
+
+```html
+<!-- Custom component successfully initialized -->
+<hamburger-menu class="js-enabled">
+  <!-- Children -->
+</hamburger-menu>
+
+<!-- Custom component not initialized -->
+<hamburger-menu>
+  <!-- Children -->
+</hamburger-menu>
+```
+
+In the event that the `hamburger-menu.ts` script does not load/execute, the
+custom `<hamburger-menu>` element will not have the `js-enabled` class appended
+to it. This provides a mechanism for styling the various menu components in a
+way that corresponds to the availability of the JavaScript that enhances the
+presentation of the menu.
+
+The baseline styling approach for the menu and its children is based on an
+assumption that JavaScript is unavailable for enhancing the presentation and
+behavior of the menu. That is to say, changes to the menu's presentation should
+be made in a way that, at baseline, does not rely on JavaScript. To achieve
+this on my first pass, I made use of dev tooling that disabled JavaScript so I
+could test the menu's appearance and behavior in its absence. Disabling and
+enabling JavaScript should cause the menu to change appearance and behavior.
+
+#### Maintainability
+
+I tried to separate the responsibilities of the component(s) so that the
+`<hamburger-menu>` Web Component is responsible for JavaScript-driven
+interactivity of the menu, as well as establishing the state required for its
+enhanced presentation. CSS selectors of the component and its children can
+reference attributes that are modified by the script in response to user
+interactions.
+
+The `<hamburger-menu>` element wraps a generic unordered list of links, which
+is a common HTML structure when building a list of navigation links. It
+provides a way for its children to adapt their presentation in the event that a
+user has JavaScript disabled or the component fails to initialize for some
+reason. This is achieved by appending a class `js-enabled` to the outermost
+HTML element in the component, which serves as an indicator that the JavaScript
+that powers the menu has successfully initialized. CSS selectors in the child
+elements can use this class to change their presentation accordingly.
+
+The styling for the custom `<hamburger-menu>` itself should live in the
+`hamburger-menu.css` file. This file contains the styling that animates the
+component and provides the general layout of the enhanced component. The
+styling herein is aimed at positioning the menu at the top of the viewport,
+and animating the menu's "open" and "closed" states.
+
+To visually represent the state of the `<burger-menu>`, CSS responds to the
+state created by the custom element. At the component level, state is
+represented as:
+
+```js
+// Not enabled, closed
+{
+  status: 'closed',
+  enabled: false,
+}
+
+// Enabled, open
+{
+  status: 'open',
+  enabled: true,
+}
+```
+
+The core structure of the menu is straightforward:
+
+```html
+<div class="burger-menu" data-element="burger-root">
+  <button
+    class="burger-menu__trigger"
+    data-element="burger-menu-trigger"
+    type="button"
+    aria-label="Open menu"
+  >
+    <span class="burger-menu__bar" aria-hidden="true"></span>
+  </button>
+  <div class="burger-menu__panel" data-element="burger-menu-panel">
+    ${this.initialMarkup}
+    <!-- Children are rendered here -->
+  </div>
+</div>
+```
+
+When state changes in response to a user interaction, the menu's attributes are
+changed to respond to the state change. The `root` of the menu has the
+attributes `status` and `enabled` which mirror the state object depicted
+above. Additionally, relevant `aria-` attributes are updated:
+
+```js
+//...
+  processStateChange() {
+    this.root.setAttribute('status', this.state.status)
+    this.root.setAttribute('enabled', this.state.enabled ? 'true' : 'false')
+
+    this.manageFocus()
+
+    switch (this.state.status) {
+      case 'closed':
+        this.trigger.setAttribute('aria-expanded', 'false')
+        this.trigger.setAttribute('aria-label', 'Open menu')
+        break
+      case 'open':
+        this.trigger.setAttribute('aria-expanded', 'true')
+        this.trigger.setAttribute('aria-label', 'Close menu')
+        break
+    }
+  }
+//...
+```
+
+Thus, the enhanced menu's styling can be applied by way of CSS selectors that
+target the custom element's attributes:
+
+```css
+.burger-menu[enabled='true'] .burger-menu__trigger {
+  /* STYLES */
+}
+
+.burger-menu[enabled='true'] .burger-menu__panel {
+  /* STYLES */
+}
+
+.burger-menu[enabled='true'][status='open'] .burger-menu__panel {
+  /* STYLES */
+}
+```
+
+I created an Astro component called `<ResponsiveNavigation />` to bring
+together the Web Component `<hamburger-menu>` and the Astro conventions used
+throughout the rest of the project. This component imports the script
+and stylesheet that registers, defines, and styles the `<hamburger-menu>`
+component.
+
+The `<NavigationLinks />` Astro component sticks with Astro's styling
+conventions and relies on component-scoped styling via the `<style>` tag. The
+styles in this component apply to the `<ul>` that wraps the actual
+navigational elements of the main site navigation. It does not apply styling to
+the individual links it renders. Its responsibility is to style the container
+around the links themselves. It responds to the presence or absence of
+JavaScript by looking for a `js-emablled` class attached to an ancestor in the
+case that the `<hamburger-menu>` Web Component is successfully initialized.
+
+The `<NavigationLink />` component also adheres to Astro's component-scoped
+styling conventions. The styles for this component only apply to the individual
+link elements that appear in the navigation component.
+
+The `<SubnavigationMenu />` component also relies on Astro's component-scoped
+styles to control its presentation.
+
+The general component structure looks something like this:
+
+```
+ResponsiveNavigation (Astro)
+│
+└── hamburger-menu (Web Component)
+    │
+    └── NavigationLinks (Astro)
+        │
+        ├── NavigationLink (Astro)
+        ├── NavigationLink (Astro)
+        └── NavigationLink (Astro)
+```
+
+#### `data-breakpoint` Attribute of `<hamburger-menu>`
+
+To control the display of the mobile-friendly hamburger menu, the
+`<hamburger-menu>` has a `data-breakpoint` attribute which is used to determine
+the viewport width at which the enhanced presentation of the menu is enabled/
+disabled. The `<ResponsiveNavigation />` component contains the type definition
+that documents the attribute and its intended use.
+
+The `data-breakpoint` attribute accepts a string value that represents the
+maximum viewport width (inclusive) at which the enhanced presentation of the
+menu is enabled. At viewport dimensions above this value, the hamburger menu is
+disabled and a more traditional row of links is displayed.
+
+The `<ResponsiveNavigation />` component (which is responsible for rendering
+the `<hamburger-menu>`), a default value supplied to the `data-breakpoint`
+attribute is set to `'640'`, which corresponds to the Tailwind 3 `screens.sm`
+breakpoint. The [full theme](https://github.com/tailwindlabs/tailwindcss/blob/v3/stubs/config.full.js) documents default values.
+
+In the `hamburger-menu.ts` script, a fallback value of `9999` is supplied by
+the `breakpoint` getter, which makes the breakpoint value available to the
+component's logic where needed. This effectively enables the enhanced
+presentation of the menu in the event that there is an error retrieving the
+`data-breakpoint` attribute value in the script.
+
+The `hamburger-menu.ts` script uses the `data-breakpoint` attribute's value to
+control the `enabled` state of the component in relation to the viewport width.
+This is achieved by interpolating the value into a `max-width` media query and
+then passing the media query to `window.matchMedia()`. The `matchMedia()` method
+returns a `MediaQueryList` object, whose `.matches` property can be used to
+check if the document matches the media query.
+
+The `MediaQueryList` object exposes an `addEventListener()` method that can be
+used to register a callback function for a `change` event. When the component 
+is mounted to the DOM, the callback function is invoked to set the initial 
+`enabled` state based on whether the document matches the aforementioned media 
+query. The same callback function is passed to the `addEventListener()` to 
+update the `enabled` state in response to changes in viewport dimension that 
+change the `MediaQueryList.matches` property. Additionally, if the viewport 
+dimension changes and no longer matches the media query while the menu is open, 
+the callback function will change the `status` of the component to `closed`.
