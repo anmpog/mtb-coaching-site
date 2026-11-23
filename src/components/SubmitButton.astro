@@ -1,11 +1,12 @@
 ---
-import { Icon } from 'astro-icon/components'
-import type { HTMLAttributes } from 'astro/types'
+import { Icon } from 'astro-icon/components';
+import type { HTMLAttributes } from 'astro/types';
 
 // State values: loading, success, error, idle
 
 interface Props extends HTMLAttributes<'button'> {
-  /** A button variant defined in accordance with tailwind conventions. Button variants are defined in main.css. /*
+  /** A button variant defined in accordance with tailwind conventions. Button variants are defined in main.css. This button is designed to be used with
+  a form specifically, as it reflects form state in its presentation. /*
    * @defaultValue 'btn-primary'
    */
   variant?: 'btn-primary' | 'btn-secondary'

@@ -28,6 +28,94 @@ The media query's defined breakpoint of `768px` comes from the [Tailwind 3 defau
 <div class='sm:px-2 md:px-4 lg:px-6'>...</div>
 ```
 
+### Focus Styles
+
+Focus styles are an important accessibility marker for users who rely on
+keyboard navigation. To ensure that interactive elements receive proper focus
+styling, I tried to define some flexible global styles that ensure that focus
+styles have a sensible default, but that the default is also easy to override.
+
+The approach I implemented here came from [this article by Stephanie Eckles](https://css-tricks.com/standardizing-focus-styles-with-css-custom-properties/).
+She created and documented an approach that allows us a flexible, maintainable
+way to ensure that focus styling is applied accessibly and without much fuss
+for the developer.
+
+```css
+@layer base {
+  :root {
+    /* ... other root styles */
+    :is(a, button, input, textarea, summary) {
+      --outline-size: max(2px, 0.08em);
+      --outline-style: solid;
+      --outline-color: var(--focus-color, currentColor);
+    }
+
+    :is(a, button, input, textarea, summary):focus {
+      outline: var(--outline-size) var(--outline-style) var(--outline-color);
+      outline-offset: var(--outline-offset, var(--outline-size));
+    }
+
+    :is(a, button, input, textarea, summary):focus-visible {
+      outline: var(--outline-size) var(--outline-style) var(--outline-color);
+      outline-offset: var(--outline-offset, var(--outline-size));
+    }
+
+    :is(a, button, input, textarea, summary):focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+  /* ...rest of styles */
+}
+```
+
+These CSS rules define a series of variables that establish default focus
+styling for links, buttons, inputs, text areas, and summaries, and define both
+`:focus` and `:focus-visible` styles to ensure that native browser behaviors
+are not disrupted. **(Important note: This list of elements is not an
+exhaustive list of elements that can receive focus.)**
+
+The following rule defines the default/fallback behavior:
+
+```css
+:is(a, button, input, textarea, summary) {
+  --outline-size: max(2px, 0.08em);
+  --outline-style: solid;
+  --outline-color: var(--focus-color, currentColor);
+}
+```
+
+The important declaration is the `--outline-color: var(--focus-color, 
+currentColor)`. This rule defines a variable called `--outline-color` that can
+be used in other rules. The use of the `var()` keyword is responsible for the
+fallback behavior: in the event that a `--focus-color` value hasn't been
+defined, the `--outline-color` falls back to the CSS `currentColor`, which is
+the computed `color` property of the given element.
+
+This pattern allows individual components to define a `--focus-color`
+property, providing a way to customize the outline color of a focused element
+when the `currentColor` default doesn't provide sufficient contrast.
+
+```css
+/* example of overriding the --focus-color for a specific component */
+.navigation-link.active {
+  --focus-color: theme('colors.brand-blue');
+  font-weight: theme(fontWeight.semibold);
+  background-color: theme('colors.active-link');
+  color: theme(colors.slate.100);
+}
+```
+
+In the example above, a background color is used to help provide a visual
+indication of the `.active` element, and the `color` of the element is set to
+provide adequate contrast against the background. Because the
+`.navigation-link` elements appear against a light-colored background, and
+`currentColor` would resolve to the light-colored `colors.slate.100` value,
+it was necessary to override the default outline color that would be applied
+to the element by providing a color value that will have more contrast against
+the light colored background. It is still important to ensure that chosen
+colors have sufficient contrast against their backgrounds so that the styles
+are visually accessible.
+
 ## Layout
 
 ### Side By Side
@@ -651,11 +739,11 @@ returns a `MediaQueryList` object, whose `.matches` property can be used to
 check if the document matches the media query.
 
 The `MediaQueryList` object exposes an `addEventListener()` method that can be
-used to register a callback function for a `change` event. When the component 
-is mounted to the DOM, the callback function is invoked to set the initial 
-`enabled` state based on whether the document matches the aforementioned media 
-query. The same callback function is passed to the `addEventListener()` to 
-update the `enabled` state in response to changes in viewport dimension that 
-change the `MediaQueryList.matches` property. Additionally, if the viewport 
-dimension changes and no longer matches the media query while the menu is open, 
+used to register a callback function for a `change` event. When the component
+is mounted to the DOM, the callback function is invoked to set the initial
+`enabled` state based on whether the document matches the aforementioned media
+query. The same callback function is passed to the `addEventListener()` to
+update the `enabled` state in response to changes in viewport dimension that
+change the `MediaQueryList.matches` property. Additionally, if the viewport
+dimension changes and no longer matches the media query while the menu is open,
 the callback function will change the `status` of the component to `closed`.

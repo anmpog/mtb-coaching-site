@@ -4,9 +4,9 @@ export interface Props {
   imageSrc: ImageMetadata
 }
 
-import type { ImageMetadata } from 'astro'
 import heroData from '@data/site-data.json'
 import getLqip from '@utils/getLqip.ts'
+import type { ImageMetadata } from 'astro'
 import { Picture } from 'astro:assets'
 const { tagline, heroTitle, heroSubtext } = heroData
 const { imageSrc } = Astro.props
@@ -61,7 +61,9 @@ const lqip = getLqip(imageSrc)
       >
         {heroSubtext}
       </p>
-      <button class='btn btn-primary order-3 self-center md:order-none'>
+      <button
+        class='btn btn-primary [--focus-color:theme(colors.brand-blue)] order-3 self-center md:order-none'
+      >
         Book Now
       </button>
     </div>

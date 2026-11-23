@@ -14,6 +14,41 @@
 
     /* utilities */
     --flow-content-mt: 1.125em;
+
+    .preload *,
+    .preload *::before,
+    .preload *::after {
+      -webkit-transition: none !important;
+      -moz-transition: none !important;
+      -ms-transition: none !important;
+      -o-transition: none !important;
+      transition: none !important;
+    }
+
+    /* flexible focus styling. This pattern was adapted directly from 
+    Stephanie Eckles, who documented this approach in their article on CSS 
+    Tricks: https://css-tricks.com/standardizing-focus-styles-with-css-custom-properties/
+    */
+    :is(a, button, input, textarea, summary) {
+      --outline-size: max(2px, 0.08em);
+      --outline-style: solid;
+      --outline-color: var(--focus-color, currentColor);
+    }
+
+    :is(a, button, input, textarea, summary):focus {
+      outline: var(--outline-size) var(--outline-style) var(--outline-color);
+      outline-offset: var(--outline-offset, var(--outline-size));
+    }
+
+    :is(a, button, input, textarea, summary):focus-visible {
+      outline: var(--outline-size) var(--outline-style) var(--outline-color);
+      outline-offset: var(--outline-offset, var(--outline-size));
+    }
+
+    /* Remove focus styles for browsers that support :focus-visible */
+    :is(a, button, input, textarea, summary):focus:not(:focus-visible) {
+      outline: none;
+    }
   }
 
   /* For browsers that support clamp  */
@@ -105,6 +140,8 @@
 
   .btn-primary {
     @apply btn border border-neutral-950 bg-neutral-950 text-neutral-200;
+    --btn-primary-focus-color: theme(colors.neutral.950);
+    --focus-color: var(--btn-primary-focus-color);
   }
 
   .btn-primary:hover {
@@ -118,6 +155,13 @@
   .btn-secondary {
     @apply btn border border-active-link text-slate-50;
     background-color: color-mix(in srgb, theme(colors.active-link) 90%, black);
+
+    --btn-secondary-focus-color: color-mix(
+      in srgb,
+      theme(colors.active-link) 90%,
+      black
+    );
+    --focus-color: var(--btn-secondary-focus-color);
   }
 
   .btn-secondary:hover {
@@ -208,7 +252,7 @@
   margin-top: var(--flow-content-mt);
 }
 
-@media (min-width: theme('screens.md')) {
+@media (max-width: theme(screens.md)) {
   /* Utility classes to work alongside side-by-side component */
   #side-by-side[data-content-direction='image-content'] #side-by-side-text {
     align-items: flex-start;

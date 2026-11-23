@@ -50,6 +50,8 @@ const currentPath = requestPath.split('/')[1]
   }
 
   .navigation-link.active {
+    /* --focus-color allows override of currentColor so that focus outline is more visible */
+    --focus-color: theme('colors.brand-blue');
     font-weight: theme(fontWeight.semibold);
     background-color: theme('colors.active-link');
     color: theme(colors.slate.100);

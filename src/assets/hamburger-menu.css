@@ -68,7 +68,6 @@
   min-height: 75vh;
   background-color: white;
   display: flex;
-  border: 2px solid red;
 }
 
 .burger-menu[enabled='true'][status='closed'] .burger-menu__panel > * {
